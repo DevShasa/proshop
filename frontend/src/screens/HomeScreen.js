@@ -10,7 +10,7 @@ const HomeScreen = () =>{
     useEffect(()=>{
 
         async function fetchProduct(){
-            const {data} = await axios.get('http://127.0.0.1:8000/api/products/')
+            const {data} = await axios.get('/api/products/')
             setProducts(data)
         }
 
