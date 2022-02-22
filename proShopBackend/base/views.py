@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .products import products
+# from .products import products
 # from django.http import JsonResponse
 from .models import Product
 from .serializers import ProductSerializer 
@@ -28,10 +28,11 @@ def getProducts(request):
 
 @api_view(['GET'])
 def getProduct(request, pk):
-    product = None
-    for i in products:
-        if i['_id'] == pk:
-            product = i
-            break
+    product = Product.objects.get(_id = pk)
+    # for i in products:
+    #     if i['_id'] == pk:
+    #         product = i
+    #         break
+    serializer = ProductSerializer(product,many=False)
 
-    return Response(product)
+    return Response(serializer.data)
