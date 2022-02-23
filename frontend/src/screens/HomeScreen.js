@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import Product from '../components/Product';
 import Loader from '../components/Loader';
@@ -15,7 +15,7 @@ const HomeScreen = () =>{
 
     useEffect(()=>{
         dispatch(listProducts())
-    }, [])
+    }, [dispatch])
 
     return(
         <div>
