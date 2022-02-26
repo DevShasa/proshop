@@ -78,18 +78,28 @@ const CartScreen = ({ match, location, history })=>{
                 }
             </Col>
             <Col md={4}>
-                <h1>Cart Details</h1>
+                <h1>Total</h1>
                 <Card>
                     <ListGroup variant="flush">
                         <ListGroup.Item>
-                            <h4>
-                                Items: {cartItems.reduce((acc, item)=>acc + item.qty, 0)} 
-                            </h4>
+                            <Row>
+                                <Col md={6}>
+                                    <h4>Items:</h4>
+                                </Col>
+                                <Col md={6}>
+                                    <h4>{cartItems.reduce((acc, item)=>acc + item.qty, 0)} </h4>
+                                </Col>
+                            </Row>
                         </ListGroup.Item>
                         <ListGroup.Item>
-                            <h4>
-                                Total Price: ${cartItems.reduce((acc, item)=>acc + (item.qty * item.price), 0).toFixed(2)} 
-                            </h4>
+                            <Row>
+                                <Col md={6}>
+                                        <h4>Total:</h4>
+                                </Col>
+                                <Col md={6}>
+                                    <h4>${cartItems.reduce((acc, item)=>acc + (item.qty * item.price), 0).toFixed(2)}  </h4>
+                                </Col>
+                            </Row>
                         </ListGroup.Item>
                         <ListGroup.Item>
                             <Button
