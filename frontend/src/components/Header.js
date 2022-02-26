@@ -7,7 +7,6 @@ const Header=()=>{
 
   const { cartItems } = useSelector(state => state.cart)
 
-
   return(
     <header>
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
@@ -19,8 +18,10 @@ const Header=()=>{
             <Navbar.Collapse id="navbarScroll">
               <Nav className="mr-auto">
 
-                <LinkContainer to="/cart">
-                  <Nav.Link ><i className="fas fa-shopping-cart"></i> Cart({cartItems.length})</Nav.Link>
+                <LinkContainer to="/cart"> 
+                  <Nav.Link >
+                    <i className="fas fa-shopping-cart"></i> Cart{cartItems.length !== 0 && `(${cartItems.length})`}
+                  </Nav.Link>
                 </LinkContainer>
 
                 <LinkContainer to="/login">
