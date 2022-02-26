@@ -8,7 +8,6 @@ import CartScreen from './screens/CartScreen';
 
 function App() {
 
-
   return (
     <Router>
       <Header />

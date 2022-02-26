@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Row, Col, ListGroup, Image, Form, Card, Button } from 'react-bootstrap'
@@ -6,27 +6,26 @@ import Message from '../components/Message';
 import { addToCart, removeFromCart } from '../redux/actions/cartActions';
 
 const CartScreen = ({ match, location, history })=>{
-    const productId = match.params.id
-    const quantity = location.search 
-                        ? parseInt(location.search.split('=')[1]) 
-                        : 1
-
     const dispatch = useDispatch()
     const { cartItems } = useSelector(state => state.cart)
-    console.log( cartItems )
 
-    useEffect(()=>{
-        if(productId){
-            // Create a new product
-            dispatch(addToCart(productId, quantity))
-        }
-    }, [dispatch, productId, quantity])
+
+    // const productId = match.params.id
+    // const quantity = location.search 
+    //                     ? parseInt(location.search.split('=')[1]) 
+    //                     : 1
+    // useEffect(()=>{
+    //     if(productId){
+    //         // Create a new product
+    //         dispatch(addToCart(productId, quantity))
+    //     }
+    // }, [dispatch, productId, quantity])
 
     const removeCartItem = (p_id) =>{
         dispatch(removeFromCart(p_id)) 
     }
 
-    
+
     const checkoutHandler = ()=>{
         history.push('/login?redirect=shipping')
     }
@@ -89,7 +88,7 @@ const CartScreen = ({ match, location, history })=>{
                         </ListGroup.Item>
                         <ListGroup.Item>
                             <h4>
-                                Total Price: ${cartItems.reduce((acc, item)=>acc + (item.qty * item.price), 0)} 
+                                Total Price: ${cartItems.reduce((acc, item)=>acc + (item.qty * item.price), 0).toFixed(2)} 
                             </h4>
                         </ListGroup.Item>
                         <ListGroup.Item>
