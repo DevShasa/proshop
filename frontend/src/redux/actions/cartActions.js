@@ -31,7 +31,7 @@ export const removeFromCart = (p_id) =>
 
         // Update localstorage
         localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
-    }
+    } 
 
 
 
