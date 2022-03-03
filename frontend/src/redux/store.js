@@ -17,10 +17,15 @@ const reducer  = combineReducers({
 const cart_from_localStorage = localStorage.getItem('cartItems')
                                 ? JSON.parse(localStorage.getItem('cartItems'))
                                 : [] 
-                                    
+
+                                
+const user_from_localStorage = localStorage.getItem('userInfo')
+                                ? JSON.parse(localStorage.getItem('userInfo'))
+                                : null
 
 const initialState = {
-    cart: { cartItems: cart_from_localStorage }
+    cart: { cartItems: cart_from_localStorage },
+    userLogin: {userInfo: user_from_localStorage}
 }
 const store  = createStore(
     reducer,

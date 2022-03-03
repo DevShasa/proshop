@@ -3,36 +3,38 @@ import {
     USER_LOGIN_REQUEST,
     USER_LOGIN_SUCCESS,
     USER_LOGIN_FAIL,
-    USER_LOGOUT
+    // USER_LOGOUT
 } from '../constants/userConstants'
 
 const config = {
     headers:{'Content-type':'application/json'}
 }
 
-export const login = (email, password) =>
+export const Login = (email, password) =>
     async (dispatch) =>{
         try{
             dispatch({
                 type: USER_LOGIN_REQUEST
             })
 
-        const response =  await axios.post(
-                '/api/users/login/', 
-                {'username': email, 'password': password}, 
-                config
-            )
+            const response =  await axios.post(
+                    '/api/users/login/', 
+                    {'username': email, 'password': password}, 
+                    config
+                )
 
-        dispatch({
-            type: USER_LOGIN_SUCCESS,
-            payload: response.data
-        })
+            dispatch({
+                type: USER_LOGIN_SUCCESS,
+                payload: response.data
+            })
+
+            localStorage.setItem('userInfo', JSON.stringify(response.data))
 
         }catch(error){
             dispatch({
                 type:USER_LOGIN_FAIL,
-                payload: error.response && error.response.data.message 
-                    ? error.response.data.message 
+                payload: error.response && error.response.data.detail 
+                    ? error.response.data.detail 
                     : error.message,
             })
         }
