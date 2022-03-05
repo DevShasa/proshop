@@ -43,6 +43,20 @@ def getUserProfile(request):
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateUserProfile(request):
+    '''
+    Accept a bearer jwt token in the GET request header
+    use token to get user obj
+    '''
+    user = request.user # Get user from token 
+    serializer = UserSerializerWithToken(user, many=False)
+
+    
+
+    return Response(serializer.data)
+
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
 def getUsers(request):

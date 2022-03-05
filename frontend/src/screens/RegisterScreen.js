@@ -24,11 +24,12 @@ const RegisterScreen = ({location, history }) =>{
         message: ''
     })
 
+    const loggedIn = useSelector(state=> state.userLogin)
     useEffect(()=>{
-        if(userInfo){
+        if(loggedIn.userInfo){
             history.push(redirect)
         }
-    }, [history, userInfo, redirect])
+    }, [history, loggedIn.userInfo, redirect])
 
     const handleChange = (e) => {
         setRegisterData({ ...registerData,  [e.target.name]: e.target.value })
@@ -39,6 +40,7 @@ const RegisterScreen = ({location, history }) =>{
 
         if(registerData.password !== registerData.confirmPassword){
             setRegisterData({
+                ...registerData,
                 message: "Passwords do not match"
             })
         }else{
