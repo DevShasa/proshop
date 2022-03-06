@@ -51,9 +51,19 @@ def updateUserProfile(request):
     use token to get user obj
     '''
     user = request.user # Get user from token 
-    serializer = UserSerializerWithToken(user, many=False)
 
-    
+    # Get the form data
+    data =  request.data
+    user.first_name = data['name']
+    user.username = data['email']
+    user.email = data['email']
+    if data['password'] != '':
+        user.password = make_password(data['password'])
+    # Save the form data 
+    user.save()
+
+    # Return updated form data 
+    serializer = UserSerializerWithToken(user, many=False)
 
     return Response(serializer.data)
 
