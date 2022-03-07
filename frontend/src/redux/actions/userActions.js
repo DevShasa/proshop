@@ -6,10 +6,14 @@ import {
     USER_LOGOUT,
     USER_REGISTER_REQUEST,
     USER_REGISTER_SUCCESS,
-    USER_REGISTER_FAIL
+    USER_REGISTER_FAIL,
+    USER_DETAIL_REQUEST,
+    USER_DETAIL_SUCCESS,
+    USER_DETAIL_FAIL
 } from '../constants/userConstants'
 
 const config = {
+    // Content-Type: application/x-www-form-urlencoded
     headers:{'Content-type':'application/json'}
 }
 
@@ -76,6 +80,39 @@ export const register = (name, email, password) => {
         }catch(error){
             dispatch({
                 type:USER_REGISTER_FAIL,
+                payload: error.response && error.response.data.detail 
+                    ? error.response.data.detail 
+                    : error.message,
+            })
+        }
+    }
+}
+
+export const getUserDetails = (id)=>{
+    return async(dispatch, getState)=>{
+        try{
+            dispatch({type:USER_DETAIL_REQUEST})
+
+            // Get authorization token from current user 
+            const { userLogin:{ userInfo:{token}} } = getState()
+            // Put the authorization token inside http header
+            const authConfig = {
+                header: {
+                    'Content-type': 'application/json',
+                    'Authorization': 'Bearer ' + token 
+                }
+            }
+
+            
+            const response = await axios.get(`api/users/${id}`, authConfig)
+            // url will evaluate to 'api/users/profile' its a string value 
+            dispatch({
+                type: USER_DETAIL_SUCCESS,
+                payload: response.data
+            })
+        }catch(error){
+            dispatch({
+                type:USER_DETAIL_FAIL,
                 payload: error.response && error.response.data.detail 
                     ? error.response.data.detail 
                     : error.message,

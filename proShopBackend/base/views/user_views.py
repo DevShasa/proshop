@@ -14,6 +14,9 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 @api_view(['POST'])
 def registerUser(request):
+    # print('LOOKIE HERE register>>> ', request.data,)
+    # print('HEADER register>>> ', request.headers.get('Content-Type'),)
+
     data = request.data
     try:
         # Create the user and return the associated user object 
@@ -53,6 +56,7 @@ def updateUserProfile(request):
     user = request.user # Get user from token 
 
     # Get the form data
+    # print('LOOKIE HERE update>>> ', request.data)
     data =  request.data
     user.first_name = data['name']
     user.username = data['email']
