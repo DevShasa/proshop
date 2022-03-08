@@ -93,17 +93,17 @@ export const getUserDetails = (id)=>{
         try{
             dispatch({type:USER_DETAIL_REQUEST})
 
-            // Get authorization token from current user 
+            // Get authorization token from current user
+            //  getstate().userLogin.userInfo.token
             const { userLogin:{ userInfo:{token}} } = getState()
             // Put the authorization token inside http header
             const authConfig = {
-                header: {
+                header: { 
                     'Content-type': 'application/json',
                     'Authorization': 'Bearer ' + token 
                 }
             }
 
-            
             const response = await axios.get(`api/users/${id}`, authConfig)
             // url will evaluate to 'api/users/profile' its a string value 
             dispatch({
