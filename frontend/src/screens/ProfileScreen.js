@@ -1,11 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import { Link } from 'react-router-dom';
-import { Form, Button, Row, Col } from "react-bootstrap"; 
+// import { Link } from 'react-router-dom';
+import { Form, Button, Row, Col, Alert } from "react-bootstrap"; 
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { useDispatch, useSelector } from "react-redux"; 
 import { getUserDetails } from "../redux/actions/userActions";
-import FormContainer from '../components/FormContainer';
 
 const ProfileScreen = ({ history}) =>{
 
@@ -13,15 +12,14 @@ const ProfileScreen = ({ history}) =>{
         const dispatch = useDispatch()
         const { user, loading, error } =  useSelector(state => state.userDetails)
         const { userInfo } = useSelector(state => state.userLogin)
-    
-        const [userData, setuserData] = useState({
-            email: '',
-            name: '',
-            password: '',
-            confirmPassword: '', 
-            message: ''
-        })
-    
+
+        const [ email, setEmail ] = useState('')
+        const [ name, setName ] = useState('')
+        const [ password, setPassword ] = useState('')
+        const [ confirmPassword, setConfirmPassword ] = useState('')
+        const [ message, setMessage ] = useState('')
+        const [editProfile, setEditProfile] = useState(false)
+
         useEffect(()=>{
             // Not logged in 
             if(!userInfo){
@@ -32,31 +30,21 @@ const ProfileScreen = ({ history}) =>{
                     // if there is no userinfo
                     dispatch(getUserDetails('profile'))
                 }else{
-                    // if there is user info update state
-                    setuserData({
-                        ...userData,
-                        email: user.email,
-                        name: user.name
-                    })
+                    setEmail(user.email)
+                    setName(user.name)
                 }
             }
-        }, [dispatch, history, user, userInfo, userData])
+        }, [dispatch, history, user, userInfo])
     
-        const handleChange = (e) => {
-            setuserData({ ...userData,  [e.target.name]: e.target.value })
-        }
     
         const submitHandler = (e) =>{
             e.preventDefault()
-    
-            if(userData.password !== userData.confirmPassword){
-                setuserData({
-                    ...userData,
-                    message: "Passwords do not match"
-                })
+            if(password !== confirmPassword){
+                setMessage('The passwords do not match')
             }else{
                 // dispatch data to backend
                 console.log('Updating...')
+                setEditProfile(false)
             }
             
         }
@@ -65,6 +53,76 @@ const ProfileScreen = ({ history}) =>{
             <Row>
                 <Col md={3}>
                     <h2>User Profile</h2>
+                    {message && <Message variant="info">{message}</Message>}
+                    {error && <Message variant="danger">{error}</Message>}
+                    {loading && <Loader/>}
+                    {editProfile
+                        ? (
+                            <Form onSubmit = {submitHandler}> 
+                            <Form.Group controlId='name'>
+                                <Form.Label>Name</Form.Label>
+                                <Form.Control
+                                    required 
+                                    type = "name"
+                                    placeholder = "Enter Name"
+                                    value = {name}
+                                    onChange = {(e) => setName(e.target.value)}
+                                >
+                                </Form.Control>
+                            </Form.Group>
+
+                            <Form.Group controlId='email'>
+                                <Form.Label>Email Address</Form.Label>
+                                <Form.Control
+                                    required
+                                    type = "email"
+                                    placeholder = "Enter Email"
+                                    value = {email}
+                                    onChange = {(e) => setEmail(e.target.value)}
+                                >
+                                </Form.Control>
+                            </Form.Group>
+
+                            <Form.Group controlId='password'>
+                                <Form.Label>Confirm Password</Form.Label>
+                                <Form.Control
+                                    type = "password"
+                                    placeholder = "Confirm Password"
+                                    value = {confirmPassword}
+                                    onChange = {(e) => setConfirmPassword(e.target.value)}
+                                >
+                                </Form.Control>
+                            </Form.Group>
+
+                            <Form.Group controlId='passwordConfirm'>
+                                <Form.Label>Password</Form.Label>
+                                <Form.Control
+                                    type = "password"
+                                    placeholder = "Enter Password"
+                                    value = {password}
+                                    onChange = {(e) => setPassword(e.target.value)}
+                                >
+                                </Form.Control>
+                            </Form.Group>
+                            <Button type="submit" variant="primary" className="mt-2">Change Details</Button>
+                        </Form>
+                        ):
+                        (
+                            <div>
+                                <p>Name</p>
+                                <Alert variant='dark'>{name}</Alert>
+                                <p>Email</p>
+                                <Alert variant='dark'>{email}</Alert>
+                                <Button 
+                                    variant="primary"
+                                    onClick = {() => setEditProfile(true)}
+                                >
+                                    Change Details
+                                </Button>
+                            </div>
+                        )
+                    }
+
                 </Col>
                 <Col md={9}>
                     <h2>My Orders</h2>

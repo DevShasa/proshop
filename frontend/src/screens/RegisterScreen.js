@@ -14,7 +14,7 @@ const RegisterScreen = ({location, history }) =>{
 
     // Redux imports 
     const dispatch = useDispatch()
-    const { userInfo, loading, error } =  useSelector(state => state.userRegister)
+    const { /*userInfo,*/ loading, error } =  useSelector(state => state.userRegister)
 
     const [registerData, setRegisterData] = useState({
         email: '',

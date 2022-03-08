@@ -42,6 +42,7 @@ def getUserProfile(request):
     Accept a bearer jwt token in the GET request header
     use token to get user obj
     '''
+    # print('AAAAAA>>> ', request.headers.get('Authorization'))
     user = request.user # Get user from token 
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
