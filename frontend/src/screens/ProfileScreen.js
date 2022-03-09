@@ -4,14 +4,14 @@ import { Form, Button, Row, Col, Alert } from "react-bootstrap";
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { useDispatch, useSelector } from "react-redux"; 
-import { getUserDetails } from "../redux/actions/userActions";
+import { getUserDetails, updateUserProfile } from "../redux/actions/userActions";
+import { USER_UPDATE_PROFILE_RESET } from "../redux/constants/userConstants"
 
 const ProfileScreen = ({ history}) =>{
 
         // Redux imports 
         const dispatch = useDispatch()
-        const { user, loading, error } =  useSelector(state => state.userDetails)
-        const { userInfo } = useSelector(state => state.userLogin)
+
 
         const [ email, setEmail ] = useState('')
         const [ name, setName ] = useState('')
@@ -20,21 +20,31 @@ const ProfileScreen = ({ history}) =>{
         const [ message, setMessage ] = useState('')
         const [editProfile, setEditProfile] = useState(false)
 
+        // Data from userDetails reducer, whic is updated when this component lods
+        const { user, loading, error } =  useSelector(state => state.userDetails)
+        // Data from userLogin reducer to make sure that user  is logged in before any changes
+        const { userInfo } = useSelector(state => state.userLogin)
+        // Data from the userUpdate reducer which gets updated when user update request is successful
+        const { success } = useSelector(state => state.userUpdate)
+
         useEffect(()=>{
             // Not logged in 
             if(!userInfo){
                 history.push('/login')
             }else{
                 // user is logged in 
-                if(!user || !user.name){
-                    // if there is no userinfo
+                if(!user || !user.name || success){
+                    dispatch({
+                        type: USER_UPDATE_PROFILE_RESET
+                    })
+                    // if there is no userinfo or there is updateprofiledata
                     dispatch(getUserDetails('profile'))
                 }else{
                     setEmail(user.email)
                     setName(user.name)
                 }
             }
-        }, [dispatch, history, user, userInfo])
+        }, [dispatch, history, user, userInfo, success])
     
     
         const submitHandler = (e) =>{
@@ -43,8 +53,12 @@ const ProfileScreen = ({ history}) =>{
                 setMessage('The passwords do not match')
             }else{
                 // dispatch data to backend
-                console.log('Updating...')
-                setEditProfile(false)
+                dispatch(updateUserProfile({
+                    // 'id': user._id,
+                    'name': name,
+                    'email': email,
+                    'password': password
+                }))
             }
             
         }

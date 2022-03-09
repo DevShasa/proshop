@@ -9,7 +9,10 @@ import {
     USER_REGISTER_FAIL,
     USER_DETAIL_REQUEST,
     USER_DETAIL_SUCCESS,
-    USER_DETAIL_FAIL
+    USER_DETAIL_FAIL,
+    USER_UPDATE_PROFILE_FAIL,
+    USER_UPDATE_PROFILE_SUCCESS,
+    USER_UPDATE_PROFILE_REQUEST,
 } from '../constants/userConstants'
 
 const config = {
@@ -77,6 +80,8 @@ export const register = (name, email, password) => {
                 type: USER_LOGIN_SUCCESS,
                 payload: response.data
             })
+            localStorage.setItem('userInfo', JSON.stringify(response.data))
+
         }catch(error){
             dispatch({
                 type:USER_REGISTER_FAIL,
@@ -120,3 +125,50 @@ export const getUserDetails = (id)=>{
         }
     }
 }
+
+
+export const updateUserProfile = (user) =>{
+    return async(dispatch, getState) =>{
+        try{
+            dispatch({type: USER_UPDATE_PROFILE_REQUEST})
+
+            // Get some essential http packages to send 
+            const { userLogin:{userInfo:{token}}} = getState()
+            const authConfig = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            }
+            // send put request to the server 
+            const response = await axios.put(
+                'api/users/profile/update/',
+                user,
+                authConfig
+            )
+            
+            // Dispatch the sucessful data update to the store
+            console.log(response)
+            console.log(response.data)
+            dispatch({
+                type: USER_UPDATE_PROFILE_SUCCESS,
+                payload: response.data
+            })
+
+            dispatch({
+                type: USER_LOGIN_SUCCESS,
+                payload: response.data
+            })
+            localStorage.setItem('userInfo', JSON.stringify(response.data))
+
+        }catch(error){
+            dispatch({
+                type:USER_UPDATE_PROFILE_FAIL,
+                payload: error.response && error.response.data.detail 
+                    ? error.response.data.detail 
+                    : error.message,
+            })
+        }
+    }
+}
+

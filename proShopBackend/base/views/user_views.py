@@ -57,7 +57,7 @@ def updateUserProfile(request):
     user = request.user # Get user from token 
 
     # Get the form data
-    # print('LOOKIE HERE update>>> ', request.data)
+    print('LOOKIE HERE update>>> ', request.data)
     data =  request.data
     user.first_name = data['name']
     user.username = data['email']
