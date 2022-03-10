@@ -148,8 +148,6 @@ export const updateUserProfile = (user) =>{
             )
             
             // Dispatch the sucessful data update to the store
-            console.log(response)
-            console.log(response.data)
             dispatch({
                 type: USER_UPDATE_PROFILE_SUCCESS,
                 payload: response.data

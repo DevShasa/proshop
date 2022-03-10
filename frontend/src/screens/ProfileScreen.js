@@ -131,7 +131,7 @@ const ProfileScreen = ({ history}) =>{
                                     variant="primary"
                                     onClick = {() => setEditProfile(true)}
                                 >
-                                    Change Details
+                                    Update Profile
                                 </Button>
                             </div>
                         )
