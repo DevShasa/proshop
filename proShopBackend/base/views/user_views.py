@@ -19,7 +19,6 @@ def registerUser(request):
 
     data = request.data
     try:
-        # Create the user and return the associated user object 
         user = User.objects.create(
             first_name = data['name'],
             username = data['email'],
@@ -64,7 +63,6 @@ def updateUserProfile(request):
     user.email = data['email']
     if data['password'] != '':
         user.password = make_password(data['password'])
-    # Save the form data 
     user.save()
 
     # Return updated form data 
