@@ -1,19 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button } from "react-bootstrap"; 
 import { useDispatch, useSelector } from "react-redux"; 
-// import { register } from "../redux/actions/userActions";
+import { saveShippingAddress } from "../redux/actions/cartActions";
 import FormContainer from '../components/FormContainer';
 
 
 const ShippingScreen = (props) =>{
-    const [address, setAddress] = useState('')
-    const [city, setCity] = useState('')
-    const [postalCode, setPostalCode] = useState('')
-    const [country, setCountry] = useState('')
 
+    const { shippingAddress } = useSelector(state =>state.cart)
+
+    const [address, setAddress] = useState(shippingAddress.address)
+    const [city, setCity] = useState(shippingAddress.city)
+    const [postalCode, setPostalCode] = useState(shippingAddress.postalCode)
+    const [country, setCountry] = useState(shippingAddress.country)
+
+    const dispatch = useDispatch()
+     
     const submithandler =(e)=>{
         e.preventDefault()
-        console.log("submitted")
+        dispatch(saveShippingAddress({
+            address: address,
+            city: city,
+            postalCode: postalCode,
+            country: country
+        }))
+        props.history.push('/payment')
     }
 
     return(
@@ -26,7 +37,7 @@ const ShippingScreen = (props) =>{
                         required 
                         type = "Address"
                         placeholder = "Enter Address"
-                        value = {address}
+                        value = {address ? address : ''}
                         onChange = {(e)=>setAddress(e.target.value)}
                     >
                     </Form.Control>
@@ -37,7 +48,7 @@ const ShippingScreen = (props) =>{
                         required 
                         type = "City"
                         placeholder = "Enter City"
-                        value = {city}
+                        value = {city ? city : ''}
                         onChange = {(e)=>setCity(e.target.value)}
                     >
                     </Form.Control>
@@ -48,7 +59,7 @@ const ShippingScreen = (props) =>{
                         required 
                         type = "Postal Code"
                         placeholder = "Enter Postal Code"
-                        value = {postalCode}
+                        value = {postalCode ? postalCode : ''}
                         onChange = {(e)=>setPostalCode(e.target.value)}
                     >
                     </Form.Control>
@@ -59,7 +70,7 @@ const ShippingScreen = (props) =>{
                         required 
                         type = "Country"
                         placeholder = "Enter Country"
-                        value = {country}
+                        value = {country ? country : ''}
                         onChange = {(e)=>setCountry(e.target.value)}
                     >
                     </Form.Control>

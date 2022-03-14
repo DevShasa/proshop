@@ -22,15 +22,18 @@ const reducer  = combineReducers({
 })
 
 const cart_from_localStorage = localStorage.getItem('cartItems')
+                                //convert into object
                                 ? JSON.parse(localStorage.getItem('cartItems'))
                                 : [] 
 
                                 
 const user_from_localStorage = localStorage.getItem('userInfo')
+                                //convert into object
                                 ? JSON.parse(localStorage.getItem('userInfo'))
                                 : null
 
 const shipping_from_localStorage = localStorage.getItem('shippingAddress')
+                                    //convert into object
                                     ? JSON.parse(localStorage.getItem('shippingAddress'))
                                     : {}
 
