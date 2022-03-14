@@ -11,14 +11,17 @@ import Message from '../components/Message';
 
 const ProductScreen = ({ match, history }) =>{
     const [quantity, setQuantity] = useState(1)
-
     const dispatch  = useDispatch()
-    const productDetail = useSelector(state => state.productDetail)
-    const { loading , error, product } = productDetail
 
+    // Use the url to update redux store 
     useEffect(()=>{
         dispatch(listProductDetail(match.params.id))
     }, [match.params.id, dispatch]) 
+
+    // Get the updated data from redux store
+    const productDetail = useSelector(state => state.productDetail)
+    const { loading , error, product } = productDetail
+
 
     const addToCartHandler =()=>{
         dispatch(addToCart(match.params.id, quantity))

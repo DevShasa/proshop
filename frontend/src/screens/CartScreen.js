@@ -27,6 +27,7 @@ const CartScreen = ({ match, location, history })=>{
 
 
     const checkoutHandler = ()=>{
+        // go to login, however if loggedin will redirect to shipping page
         history.push('/login?redirect=shipping')
     }
     return (

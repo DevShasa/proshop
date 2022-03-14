@@ -130,6 +130,7 @@ export const getUserDetails = (id)=>{
 export const updateUserProfile = (user) =>{
     return async(dispatch, getState) =>{
         try{
+            // Load the current profile
             dispatch({type: USER_UPDATE_PROFILE_REQUEST})
 
             // Get some essential http packages to send 

@@ -1,9 +1,10 @@
 import {
     CART_ADD_ITEM,
-    CART_REMOVE_ITEM
+    CART_REMOVE_ITEM,
+    CART_SAVE_SHIPPING
 } from '../constants/cartConstants';
 
-export const cartReducer = (state = {cartItems:[]}, action) =>{
+export const cartReducer = (state = {cartItems:[], shippingAddress:{}}, action) =>{
     
 
     switch(action.type){
@@ -19,7 +20,7 @@ export const cartReducer = (state = {cartItems:[]}, action) =>{
                     ...state,
                     cartItems: state.cartItems.map(x => 
                         x.product  === item_if_exists.product 
-                            ? action_item
+                            ? action_item // replace old productobject with new productobject
                             : x 
                     )
                 }
@@ -33,6 +34,11 @@ export const cartReducer = (state = {cartItems:[]}, action) =>{
             return{
                 ...state,
                 cartItems: state.cartItems.filter(x => x.product !== action.payload)
+            }
+        case CART_SAVE_SHIPPING:
+            return{
+                ...state,
+                shippingAddress: action.payload
             }
         default:
             return state

@@ -10,6 +10,8 @@ import FormContainer from '../components/FormContainer';
 const LoginScreen = ({location, history }) =>{
 
     // the user may be redirected from some other previous location
+    // if there is no redirect from preious location user will be redirected...
+    // to homescreen upon logging in 
     const redirect = location.search ? location.search.split("=")[1] : '/'
 
     // Redux imports 
@@ -33,6 +35,7 @@ const LoginScreen = ({location, history }) =>{
     }
 
     const submitHandler = (e) =>{
+        // login will update userinfo reducer
         e.preventDefault()
         dispatch(Login(loginData.email, loginData.password))
     }

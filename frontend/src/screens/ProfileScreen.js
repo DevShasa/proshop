@@ -20,7 +20,7 @@ const ProfileScreen = ({ history}) =>{
         const [ message, setMessage ] = useState('')
         const [editProfile, setEditProfile] = useState(false)
 
-        // Data from userDetails reducer, whic is updated when this component lods
+        // Data from userDetails reducer, which is updated when this component lods
         const { user, loading, error } =  useSelector(state => state.userDetails)
         // Data from userLogin reducer to make sure that user  is logged in before any changes
         const { userInfo } = useSelector(state => state.userLogin)
@@ -32,7 +32,7 @@ const ProfileScreen = ({ history}) =>{
             if(!userInfo){
                 history.push('/login')
             }else{
-                // user is logged in 
+                // user is logged in, check the userdetails reducer and updateprofilereducer
                 if(!user || !user.name || success){
                     dispatch({
                         type: USER_UPDATE_PROFILE_RESET
