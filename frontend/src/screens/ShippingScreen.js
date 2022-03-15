@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState,  } from 'react';
 import { Form, Button } from "react-bootstrap"; 
 import { useDispatch, useSelector } from "react-redux"; 
 import { saveShippingAddress } from "../redux/actions/cartActions";
 import FormContainer from '../components/FormContainer';
-
+import CheckoutSteps from '../components/CheckoutSteps';
 
 const ShippingScreen = (props) =>{
 
@@ -15,7 +15,7 @@ const ShippingScreen = (props) =>{
     const [country, setCountry] = useState(shippingAddress.country)
 
     const dispatch = useDispatch()
-     
+
     const submithandler =(e)=>{
         e.preventDefault()
         dispatch(saveShippingAddress({
@@ -28,7 +28,9 @@ const ShippingScreen = (props) =>{
     }
 
     return(
+        
         <FormContainer>
+            <CheckoutSteps step1 step2 />
             <h1>Shipping Address</h1>
             <Form onSubmit={submithandler}>
                 <Form.Group controlId='address'>
