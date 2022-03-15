@@ -1,41 +1,53 @@
 import React, { useState } from 'react';
-import { Form, Button, Col } from "react-bootstrap"; 
+import { Form, Button, Col,} from "react-bootstrap"; 
 import { useDispatch, useSelector } from "react-redux"; 
 import { savePaymentMethod } from "../redux/actions/cartActions";
 import FormContainer from '../components/FormContainer';
 import CheckoutSteps from '../components/CheckoutSteps';
+import Message from '../components/Message';
 
 // User selects payment method 
 export const PaymentScreen = (props)=>{
-    const { shippingAddress } = useSelector(state=> state.cart)
+    const { shippingAddress, paymentMethod} = useSelector(state=> state.cart)
     const dispatch = useDispatch()
 
     if(!shippingAddress.address){
         props.history.push('/shipping')
     }
 
-    const [paymentMethod, setPaymentMethod] = useState('')
+    const [payment, setPayment] = useState(paymentMethod ? paymentMethod : '')
+    const [message, setMessage] = useState('')
+
 
     const submitHandler = (e)=>{
         e.preventDefault()
-        console.log('PAYMENT: ',paymentMethod)
-        dispatch(savePaymentMethod(paymentMethod))
-        // props.history.push('/placeorder')
+        if(payment === ''){
+            setMessage('Please select payment method')
+        }else{
+            dispatch(savePaymentMethod(payment))
+            props.history.push('/placeorder')
+            setMessage('')
+        }
+
     }
 
     return(
         <FormContainer>
             <CheckoutSteps step1 step2 step3/>
             <Form onSubmit={submitHandler}>
-                <Form.Group onChange={(e)=>setPaymentMethod(e.target.value)}>
+                <Form.Group >
+                    {message &&(<Message variant="warning">{message}</Message>)}
+
                     <Form.Label as="legend">Select Payment Method</Form.Label>
                     <Col>
                         <Form.Check
                             type='radio'
                             label="Paypal"
                             id = 'paypal'
-                            name = 'paymentMethod'
+                            name = 'payment'
                             value = "Paypal"
+                            defaultChecked = {paymentMethod === "Paypal"}
+                            onChange={()=>setPayment("Paypal")}
                         >
                         </Form.Check>
                     </Col>
@@ -44,8 +56,10 @@ export const PaymentScreen = (props)=>{
                             type='radio'
                             label="Mpesa"
                             id = 'mpesa'
-                            name = 'paymentMethod'
+                            name = 'payment'
                             value = "Mpesa"
+                            defaultChecked = {paymentMethod === "Mpesa"}
+                            onChange={()=>setPayment("Mpesa")}
                         >
                         </Form.Check>
                     </Col>
