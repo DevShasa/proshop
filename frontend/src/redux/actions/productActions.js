@@ -45,7 +45,8 @@ export const listProductDetail = (id) =>
             dispatch({
                 type:PRODUCT_DETAIL_FAIL,
                 payload: error.response && error.response.data.message 
-                    ? error.response.data.message 
+                // return Response({'detail': 'No Order Items'},  status=status.HTTP_400_BAD_REQUEST)
+                    ? error.response.data.detail 
                     : error.message ,
             })
         }

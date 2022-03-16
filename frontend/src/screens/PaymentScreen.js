@@ -47,7 +47,7 @@ export const PaymentScreen = (props)=>{
                             name = 'payment'
                             value = "Paypal"
                             defaultChecked = {paymentMethod === "Paypal"}
-                            onChange={()=>setPayment("Paypal")}
+                            onChange={(e)=>setPayment(e.currentTarget.value)}
                         >
                         </Form.Check>
                     </Col>
@@ -59,7 +59,7 @@ export const PaymentScreen = (props)=>{
                             name = 'payment'
                             value = "Mpesa"
                             defaultChecked = {paymentMethod === "Mpesa"}
-                            onChange={()=>setPayment("Mpesa")}
+                            onChange={(e)=>setPayment(e.currentTarget.value)}
                         >
                         </Form.Check>
                     </Col>

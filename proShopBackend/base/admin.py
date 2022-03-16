@@ -14,8 +14,8 @@ class OrderItemInline(admin.TabularInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display =['_id','user','paymentMethod', 'shippingPrice', 'isDelivered', 'isPaid', 'deliveredAt', 'taxPrice', 'totalPrice', 'createdAt']
-    list_editable = ['totalPrice', 'isDelivered', 'taxPrice', 'shippingPrice','paymentMethod']
+    list_display =['_id','user','paymentMethod', 'isDelivered', 'isPaid', 'deliveredAt', 'taxPrice', 'totalPrice', 'createdAt']
+    list_editable = ['totalPrice', 'isDelivered', 'taxPrice','paymentMethod']
     inlines = [OrderItemInline]
 
 @admin.register(OrderItem)
