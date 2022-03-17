@@ -31,7 +31,7 @@ const PlaceOrderScreen = (props)=>{
             // Order has been creates successfully therefore clear orderCreducer
             dispatch({type: ORDER_CREATE_RESET})
         }
-    },[success, props.history])
+    },[success, props.history, order._id, dispatch])
 
     const placeOrder = ()=>{
         dispatch(createOrder({
