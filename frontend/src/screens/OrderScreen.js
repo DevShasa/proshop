@@ -26,15 +26,6 @@ const OrderScreen = (props)=>{
         .toFixed(2)
     }
 
-    const addPaypalScript = () =>{
-        const script = document.createElement('script')
-        script.type = 'text/javascript'
-        script.source = `https://www.paypal.com/sdk/js?client-id=AdwPxKxaivghu9gIAJtWc0Nk7wJTwURDOfOYpP3ofqaNyL7f7JxsErPW0szf5SOkltw4yBHdTDkTldc0&currency=USD`
-        script.async = true
-        // script.onload = () =>{ setSdkReady(true) }
-        document.body.appendChild(script)
-    }
-
     useEffect(()=>{
         if(!order || orderPay.success ||order._id !== Number(orderId)){
             // order does not exist
@@ -42,16 +33,6 @@ const OrderScreen = (props)=>{
             // order has been sucessfuly paid
             dispatch({type: ORDER_PAY_RESET})
             dispatch(getOrderDetails(orderId))
-        } else if(!order.isPaid){
-            // order has not been paid
-            if(!window.paypal){
-                // if the paypal window is not present
-                addPaypalScript()
-            // }else{
-            //     // if the window is present 
-            //     setSdkReady(true)
-            // }
-            }
         }
     },[dispatch,orderId, order, orderPay.success])
 
@@ -162,7 +143,10 @@ const OrderScreen = (props)=>{
 
                                         <PayPalButton 
                                             amount = {order.totalPrice}
-                                            onSuccess = {successPaymentHandler} 
+                                            onSuccess = {successPaymentHandler}
+                                            options={{
+                                                clientId: "AWAL9GGMp4Hm-r23tEBSmiMP5D9HGQkI9YuICm-fdKXokb6qJWDLQoA97U89WgatSUTuQGh5sh1elllz"
+                                            }}
                                         />
                                     </ListGroup.Item>
                                 )}
