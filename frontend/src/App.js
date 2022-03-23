@@ -30,7 +30,6 @@ function App() {
           <Route path ="/payment" component={PaymentScreen} />
           <Route path ="/placeorder" component={PlaceOrderScreen} />
           <Route path="/order/:id" component={OrderScreen}/>
-
         </Container>
       </main>
       <Footer />

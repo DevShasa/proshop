@@ -27,8 +27,9 @@ const PlaceOrderScreen = (props)=>{
 
     useEffect(()=>{
         if(success){
+            // Redirect the user to the order page 
             props.history.push(`/order/${order._id}`)
-            // Order has been creates successfully therefore clear orderCreducer
+            // Order has been created successfully therefore clear orderCreducer
             dispatch({type: ORDER_CREATE_RESET})
         }
     },[success, props.history, dispatch])

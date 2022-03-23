@@ -9,7 +9,8 @@ import { userLoginReducer,
         userUpdateProfileReducer } from './reducers/userReducers';
 import  { 
     orderCreateReducer, 
-    orderDetailsReducer
+    orderDetailsReducer,
+    orderPayReducer
 } from './reducers/orderReducers';
 
 const middleware = [thunk]
@@ -22,7 +23,8 @@ const reducer  = combineReducers({
         userDetails: userDetailsReducer,
         userUpdate: userUpdateProfileReducer,
         orderCreate: orderCreateReducer,
-        orderDetails: orderDetailsReducer
+        orderDetails: orderDetailsReducer,
+        orderPay: orderPayReducer,
 })
 
 const cart_from_localStorage = localStorage.getItem('cartItems')

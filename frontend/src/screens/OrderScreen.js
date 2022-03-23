@@ -1,32 +1,65 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {Row, Col, ListGroup, Image, Card } from "react-bootstrap"; 
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux"; 
 import Message from '../components/Message';
 import Loader from '../components/Loader';
+import { getOrderDetails, payOrder } from "../redux/actions/orderActions";
+import { PayPalButton } from "react-paypal-button-v2"
+import { ORDER_PAY_RESET } from "../redux/constants/orderConstants"
 
-import { getOrderDetails } from "../redux/actions/orderActions";
+const PAYPAL_CLIENT_ID = "AcQ-Z7_7RH0QhOQabNf5c8QHIeJNr2FCpnNfshsePVofyfzOkbMI88QpjS5WNu7rz0ZTfCi_2G5N1Drk"
 
 const OrderScreen = (props)=>{
+
+    // const [ sdkReady, setSdkReady ] = useState(false)
 
     const orderId = props.match.params.id
     const dispatch = useDispatch()
     const { loading, error, order } = useSelector(state=> state.orderDetails)
 
+    const  orderPay = useSelector(state=> state.orderPay)
+
     if(!loading && !error){
+        // Make the calculations only when there is an orderitem 
         order.itemsPrice = order.orderItems
         .reduce((accumulator, item)=> accumulator + item.price * item.qty, 0)
         .toFixed(2)
     }
-    
+
+    const addPaypalScript = () =>{
+        const script = document.createElement('script')
+        script.type = 'text/javascript'
+        script.source = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`
+        script.async = true
+        // script.onload = () =>{ setSdkReady(true) }
+        document.body.appendChild(script)
+    }
+
     useEffect(()=>{
-        if(!order || order._id !== Number(orderId)){
+        if(!order || orderPay.success ||order._id !== Number(orderId)){
             // order does not exist
-            // order exists in redux but does not match oderId 
+            // order exists in redux but does not match oderId
+            // order has been sucessfuly paid
+            dispatch({type: ORDER_PAY_RESET})
             dispatch(getOrderDetails(orderId))
+        } else if(!order.isPaid){
+            // order has not been paid
+            if(!window.paypal){
+                // if the paypal window is not present
+                addPaypalScript()
+            // }else{
+            //     // if the window is present 
+            //     setSdkReady(true)
+            // }
+            }
         }
-        
-    },[dispatch,orderId])
+    },[dispatch,orderId, order, orderPay.success])
+
+    // update order to paid and update orderpay.success
+    const successPaymentHandler = (paymentResult) =>{
+        dispatch(payOrder(orderId, paymentResult))
+    }
 
     return loading 
             ? <Loader />
@@ -124,10 +157,20 @@ const OrderScreen = (props)=>{
                                         <Col>${order.totalPrice}</Col>
                                     </Row>
                                 </ListGroup.Item>
+                                {!order.isPaid &&(
+                                    <ListGroup.Item>
+                                        {orderPay.loading && <Loader/>}
+
+                                        <PayPalButton 
+                                            amount = {order.totalPrice}
+                                            onSuccess = {successPaymentHandler} 
+                                        />
+                                    </ListGroup.Item>
+                                )}
                             </ListGroup>
                         </Card>
                     </Col>
                 </Row>
             </div>)
 }
-export default OrderScreen 
+export default OrderScreen
