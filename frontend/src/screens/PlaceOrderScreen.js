@@ -9,11 +9,12 @@ import { ORDER_CREATE_RESET } from "../redux/constants/orderConstants";
 
 const PlaceOrderScreen = (props)=>{
 
-    const { order, error, loading, success } = useSelector(state=> state.orderCreate)
+    const { order, error, success } = useSelector(state=> state.orderCreate)
 
     const dispatch = useDispatch()
     const cart = useSelector(state => state.cart)
 
+    // Calculate totalprice, tax and shipping
     const itemsPrice = cart.cartItems
                             .reduce((accumulator, item)=> accumulator + item.price * item.qty, 0)
                             .toFixed(2)
@@ -21,6 +22,7 @@ const PlaceOrderScreen = (props)=>{
     const taxPrice = ((0.082)* itemsPrice).toFixed(2)
     const totalPrice = (Number(itemsPrice) + Number(shippingPrice) + Number(taxPrice)).toFixed(2)
 
+    // If there is no payment method redirect back to payment screen 
     if(!cart.paymentMethod){
         props.history.push('/payment')
     }
@@ -32,7 +34,7 @@ const PlaceOrderScreen = (props)=>{
             // Order has been created successfully therefore clear orderCreducer
             dispatch({type: ORDER_CREATE_RESET})
         }
-    },[success, props.history, dispatch])
+    },[success, props.history, dispatch]) // eslint-disable-line
 
     const placeOrder = ()=>{
         dispatch(createOrder({
