@@ -73,7 +73,6 @@ export const getOrderDetails = (id) =>{
                 type:FETCH_ORDER_DETAILS_SUCCESS,
                 payload: response.data
             })
-            console.log(response.data)
 
         }catch(error){
             dispatch({
@@ -105,11 +104,11 @@ export const payOrder = (id, paymentToken) =>{
                 config
             )
             
-            dispatch({
+            dispatch({ 
                 type:ORDER_PAY_SUCCESS,
                 payload: response.data
             })
-
+            console.log(paymentToken)
         }catch(error){
             dispatch({
                 type:ORDER_PAY_FAIL,

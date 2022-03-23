@@ -8,7 +8,6 @@ import { getOrderDetails, payOrder } from "../redux/actions/orderActions";
 import { PayPalButton } from "react-paypal-button-v2"
 import { ORDER_PAY_RESET } from "../redux/constants/orderConstants"
 
-const PAYPAL_CLIENT_ID = "AcQ-Z7_7RH0QhOQabNf5c8QHIeJNr2FCpnNfshsePVofyfzOkbMI88QpjS5WNu7rz0ZTfCi_2G5N1Drk"
 
 const OrderScreen = (props)=>{
 
@@ -30,7 +29,7 @@ const OrderScreen = (props)=>{
     const addPaypalScript = () =>{
         const script = document.createElement('script')
         script.type = 'text/javascript'
-        script.source = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`
+        script.source = `https://www.paypal.com/sdk/js?client-id=AdwPxKxaivghu9gIAJtWc0Nk7wJTwURDOfOYpP3ofqaNyL7f7JxsErPW0szf5SOkltw4yBHdTDkTldc0&currency=USD`
         script.async = true
         // script.onload = () =>{ setSdkReady(true) }
         document.body.appendChild(script)
