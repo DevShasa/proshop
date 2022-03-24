@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from 'react';
 // import { Link } from 'react-router-dom';
-import { Form, Button, Row, Col, Alert } from "react-bootstrap"; 
+import { Form, Button, Row, Col, Alert,  Table} from "react-bootstrap"; 
+import { LinkContainer } from "react-router-bootstrap";
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { useDispatch, useSelector } from "react-redux"; 
 import { getUserDetails, updateUserProfile } from "../redux/actions/userActions";
-import { USER_UPDATE_PROFILE_RESET } from "../redux/constants/userConstants"
+import { USER_UPDATE_PROFILE_RESET } from "../redux/constants/userConstants";
+import { fetchMyOrders } from "../redux/actions/orderActions";
 
 const ProfileScreen = ({ history}) =>{
 
@@ -26,6 +28,7 @@ const ProfileScreen = ({ history}) =>{
         const { userInfo } = useSelector(state => state.userLogin)
         // Data from the userUpdate reducer which gets updated when user update request is successful
         const { success } = useSelector(state => state.userUpdate)
+        const { ordersLoading, ordersList, ordersError } = useSelector(state => state.userOrders)
 
         useEffect(()=>{
             // Not logged in 
@@ -35,10 +38,13 @@ const ProfileScreen = ({ history}) =>{
                 // user is logged in, check the userdetails reducer and updateprofilereducer
                 if(!user || !user.name || success){
                     dispatch({
+                        // clean the userUpdate reducer which, holds update response from db
                         type: USER_UPDATE_PROFILE_RESET
                     })
-                    // if there is no userinfo or there is updateprofiledata
+                    // Fetch current data
                     dispatch(getUserDetails('profile'))
+                    // Fetch user's order details 
+                    dispatch( fetchMyOrders() )
                 }else{
                     setEmail(user.email)
                     setName(user.name)
@@ -141,9 +147,34 @@ const ProfileScreen = ({ history}) =>{
                 </Col>
                 <Col md={9}>
                     <h2>My Orders</h2>
+                    {ordersLoading
+                        ? <Loader />
+                        : ordersError
+                        ? <Message variant='danger'> {ordersError}</Message>
+                        : (<Table striped responsive className='table-sm'>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>DATE</th>
+                                    <th>TOTAL</th>
+                                    <th>PAID</th>
+                                    <th>DELIVERED</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {ordersList.map(order=> (
+                                    <tr key={order._id}>
+                                        <td>{order._id}</td>
+                                        <td>{order.createdAt}</td>
+                                        <td>{order.totalPrice}</td>
+                                        <td>{order.isPaid ? "Order Paid" : "Not Paid"}</td>
+                                        <td>{order.isDelivered ? "Delivered" : "Not Delivered"}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>)}
                 </Col>
             </Row>
         )
 }
-
 export default ProfileScreen

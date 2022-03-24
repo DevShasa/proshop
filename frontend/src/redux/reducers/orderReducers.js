@@ -9,8 +9,12 @@ import {
     ORDER_PAY_REQUEST,
     ORDER_PAY_SUCCESS,
     ORDER_PAY_FAIL,
-    ORDER_PAY_RESET
+    ORDER_PAY_RESET,
+    LIST_MY_ORDER_REQUEST,
+    LIST_MY_ORDER_SUCCESS,
+    LIST_MY_ORDER_FAIL,
 } from '../constants/orderConstants'
+import { USER_LOGOUT } from "../constants/userConstants"
 
 export const orderCreateReducer = (state={order: {}}, action)=>{
     switch(action.type){
@@ -77,6 +81,31 @@ export const orderPayReducer = (state = {}, action) =>{
             }
         case ORDER_PAY_RESET:
             return {}
+        default:
+            return state
+    }
+}
+
+export const userOrderList = (state ={ordersList:[]}, action )=>{
+    switch(action.type){
+        case LIST_MY_ORDER_REQUEST:
+            return{
+                ordersLoading: true
+            }
+        case LIST_MY_ORDER_SUCCESS:
+            return{
+                ordersLoading: false,
+                ordersList: action.payload
+            }
+        case LIST_MY_ORDER_FAIL:
+            return{
+                ordersLoading: false,
+                ordersError: action.payload
+            }
+        case USER_LOGOUT:
+            return{
+                ordersList:[]
+            }
         default:
             return state
     }
