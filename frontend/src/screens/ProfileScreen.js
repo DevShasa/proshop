@@ -157,18 +157,26 @@ const ProfileScreen = ({ history}) =>{
                                     <th>ID</th>
                                     <th>DATE</th>
                                     <th>TOTAL</th>
-                                    <th>PAID</th>
+                                    <th>PAID</th> 
                                     <th>DELIVERED</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {ordersList.map(order=> (
                                     <tr key={order._id}>
                                         <td>{order._id}</td>
-                                        <td>{order.createdAt}</td>
+                                        <td>{order.createdAt.substring(0,10)}</td>
                                         <td>{order.totalPrice}</td>
                                         <td>{order.isPaid ? "Order Paid" : "Not Paid"}</td>
                                         <td>{order.isDelivered ? "Delivered" : "Not Delivered"}</td>
+                                        <td>
+                                            <LinkContainer to = {`/order/${order._id}`} >
+                                                <Button variant={order.isPaid ? "outline-dark" : "success"}>
+                                                    View Order
+                                                </Button>
+                                            </LinkContainer>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
