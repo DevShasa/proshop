@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {Row, Col, ListGroup, Image, Card } from "react-bootstrap"; 
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux"; 
@@ -7,6 +7,7 @@ import Loader from '../components/Loader';
 import { getOrderDetails, payOrder } from "../redux/actions/orderActions";
 import { PayPalButton } from "react-paypal-button-v2"
 import { ORDER_PAY_RESET } from "../redux/constants/orderConstants"
+import { fetchMyOrders } from "../redux/actions/orderActions";
 
 
 const OrderScreen = (props)=>{
@@ -39,6 +40,8 @@ const OrderScreen = (props)=>{
     // update order to paid and update orderpay.success
     const successPaymentHandler = (paymentResult) =>{
         dispatch(payOrder(orderId, paymentResult))
+        // update orders for profile page
+        dispatch( fetchMyOrders() )
     }
 
     return loading 

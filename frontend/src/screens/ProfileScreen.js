@@ -43,7 +43,7 @@ const ProfileScreen = ({ history}) =>{
                     })
                     // Fetch current data
                     dispatch(getUserDetails('profile'))
-                    // Fetch user's order details 
+                    // Fetch user's order details, update redux 
                     dispatch( fetchMyOrders() )
                 }else{
                     setEmail(user.email)
@@ -151,6 +151,8 @@ const ProfileScreen = ({ history}) =>{
                         ? <Loader />
                         : ordersError
                         ? <Message variant='danger'> {ordersError}</Message>
+                        : ordersList.length === 0 
+                        ? <Message variant='info'>You have no orders</Message>
                         : (<Table striped responsive className='table-sm'>
                             <thead>
                                 <tr>
@@ -180,7 +182,7 @@ const ProfileScreen = ({ history}) =>{
                                     </tr>
                                 ))}
                             </tbody>
-                        </Table>)}
+                            </Table>)}
                 </Col>
             </Row>
         )

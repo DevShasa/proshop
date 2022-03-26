@@ -13,6 +13,10 @@ import {
     USER_UPDATE_PROFILE_FAIL,
     USER_UPDATE_PROFILE_SUCCESS,
     USER_UPDATE_PROFILE_REQUEST,
+    USER_LIST_REQUEST,
+    USER_LIST_SUCCESS,
+    USER_LIST_FAIL,
+    USER_LIST_RESET
 } from '../constants/userConstants'
 
 const config = {
@@ -54,9 +58,8 @@ export const logout = () => (dispatch) =>{
     // Remove item from localstorage 
     // then dispatch logout command to reducer
     localStorage.removeItem('userInfo')
-    dispatch({
-        type: USER_LOGOUT
-    })
+    dispatch({type: USER_LOGOUT})
+    dispatch({type: USER_LIST_RESET})
 }
 
 
@@ -171,3 +174,38 @@ export const updateUserProfile = (user) =>{
     }
 }
 
+export const adminFetchUserList = () =>{
+    return async (dispatch, getState) =>{
+        try{
+            dispatch({type:USER_LIST_REQUEST})
+
+            const { userLogin: {userInfo:{token}} } = getState()
+            const authConfig = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            }
+
+            // get the data
+            const response = await axios.get(
+                '/api/users/',
+                authConfig
+            )
+
+            // Dispatch data to adminFetchUserList
+            dispatch({
+                type: USER_LIST_SUCCESS,
+                payload: response.data
+            })
+            
+        }catch(error){
+            dispatch({
+                type:USER_LIST_FAIL,
+                payload: error.response && error.response.data.detail 
+                    ? error.response.data.detail 
+                    : error.message,
+            })
+        }
+    }
+}
