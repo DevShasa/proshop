@@ -60,7 +60,10 @@ const initialState = {
         shippingAddress: shipping_from_localStorage,
         paymentMethod: payment_from_localstorage,
     },
-    userLogin: {userInfo: user_from_localStorage}
+    userLogin: { 
+        userInfo: user_from_localStorage,
+        loggedIn: user_from_localStorage ? true: false
+    }
 }
 const store  = createStore(
     reducer,

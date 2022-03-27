@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button} from "react-bootstrap"; 
 import Loader from '../components/Loader';
@@ -14,10 +14,19 @@ const UserListScreen=()=>{
             adminUserList, 
             adminUserRequestError
         } = useSelector(state => state.adminUserDisplay)
+    
+    // Is the user Logged in 
+    const { loggedIn } = useSelector(state => state.userLogin)
 
     useEffect(()=>{
-        dispatch(adminFetchUserList())
-    },[dispatch])
+        if(loggedIn){
+            dispatch(adminFetchUserList())
+        }
+    },[dispatch, loggedIn])
+
+    const deleteHandler = (id) =>{
+        console.log(`deleting user ${id}`)
+    }
 
     return(
         <div>
@@ -26,6 +35,8 @@ const UserListScreen=()=>{
             ? <Loader />
             : adminUserRequestError
             ? <Message variant="info">{adminUserRequestError}</Message>
+            : !loggedIn
+            ? <Message variant="warning">You need to log in to perform that action</Message>
             : (<Table striped bordered hover responsive className='table-sm'>
                     <thead>
                         <tr>
@@ -50,8 +61,13 @@ const UserListScreen=()=>{
                                 </td>
                                 <td>
                                     <LinkContainer to={`/admin/user/${user._id}`}>
-                                        <Button variant="primary" className="btn-sm">Edit User</Button>
+                                        <Button variant="primary" className="btn-sm">
+                                            <i className="fas fa-edit"></i>
+                                        </Button>
                                     </LinkContainer>
+                                    <Button variant="danger" className="btn-sm" onClick={() => deleteHandler(user._id)}>
+                                        <i className="fas fa-trash"></i>
+                                    </Button>
                                 </td>
                             </tr>
                         ))}

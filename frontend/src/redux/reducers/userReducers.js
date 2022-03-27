@@ -19,17 +19,22 @@ import {
     USER_LIST_RESET
 } from '../constants/userConstants'
 
-export const userLoginReducer = ( state={}, action) =>{
+export const userLoginReducer = ( state={loggedIn:false}, action) =>{
     // state = {loading, userinfo, error}
     switch(action.type){
         case USER_LOGIN_REQUEST:
-            return {loading: true }
+            return {
+                ...state,
+                loading: true 
+            }
         case USER_LOGIN_SUCCESS:
-            return {loading: false, userInfo: action.payload}
+            return {loading: false, userInfo: action.payload, loggedIn: true}
         case USER_LOGIN_FAIL:
-            return {loading:false, error: action.payload}
+            return {loading:false, error: action.payload, loggedIn:false}
         case USER_LOGOUT:
-            return {}
+            return {
+                loggedIn: false
+            }
         default:
             return state
     }
