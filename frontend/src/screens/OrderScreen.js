@@ -12,10 +12,16 @@ import { fetchMyOrders } from "../redux/actions/orderActions";
 
 const OrderScreen = (props)=>{
 
-    // const [ sdkReady, setSdkReady ] = useState(false)
 
     const orderId = props.match.params.id
     const dispatch = useDispatch()
+
+    // Check that a user is loggedin before proceeding
+    const { loggedIn } = useSelector(state => state.userLogin)
+    if(!loggedIn){
+        props.history.push(`/login?redirect=order/${orderId}`)
+    }
+
     const { loading, error, order } = useSelector(state=> state.orderDetails)
 
     const  orderPay = useSelector(state=> state.orderPay)
@@ -33,9 +39,11 @@ const OrderScreen = (props)=>{
             // order exists in redux but does not match oderId
             // order has been sucessfuly paid
             dispatch({type: ORDER_PAY_RESET})
-            dispatch(getOrderDetails(orderId))
+            if(loggedIn){
+                dispatch(getOrderDetails(orderId))
+            }
         }
-    },[dispatch,orderId, order, orderPay.success])
+    },[dispatch,orderId, order, orderPay.success, loggedIn])
 
     // update order to paid and update orderpay.success
     const successPaymentHandler = (paymentResult) =>{

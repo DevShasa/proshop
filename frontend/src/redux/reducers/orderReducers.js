@@ -6,6 +6,7 @@ import {
     FETCH_ORDER_DETAILS_REQUEST,
     FETCH_ORDER_DETAILS_SUCCESS,
     FETCH_ORDER_DETAILS_FAIL,
+    FETCH_ORDER_DETAILS_RESET,
     ORDER_PAY_REQUEST,
     ORDER_PAY_SUCCESS,
     ORDER_PAY_FAIL,
@@ -57,6 +58,10 @@ export const orderDetailsReducer = (state={loading:true }, action) => {
             return{
                 loading: false,
                 error: action.payload
+            }
+        case FETCH_ORDER_DETAILS_RESET:
+            return {
+                loading:true
             }
         default:
             return state

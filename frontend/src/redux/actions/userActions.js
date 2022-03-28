@@ -17,7 +17,8 @@ import {
     USER_LIST_SUCCESS,
     USER_LIST_FAIL,
     USER_LIST_RESET
-} from '../constants/userConstants'
+} from '../constants/userConstants';
+import { FETCH_ORDER_DETAILS_RESET } from '../constants/orderConstants';
 
 const config = {
     // Content-Type: application/x-www-form-urlencoded
@@ -60,6 +61,7 @@ export const logout = () => (dispatch) =>{
     localStorage.removeItem('userInfo')
     dispatch({type: USER_LOGOUT})
     dispatch({type: USER_LIST_RESET})
+    dispatch({type:FETCH_ORDER_DETAILS_RESET})
 }
 
 
