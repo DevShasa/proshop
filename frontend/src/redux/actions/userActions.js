@@ -16,7 +16,10 @@ import {
     USER_LIST_REQUEST,
     USER_LIST_SUCCESS,
     USER_LIST_FAIL,
-    USER_LIST_RESET
+    USER_LIST_RESET,
+    USER_DELETE_REQUEST,
+    USER_DELETE_SUCCESS,
+    USER_DELETE_FAIL
 } from '../constants/userConstants';
 import { FETCH_ORDER_DETAILS_RESET } from '../constants/orderConstants';
 
@@ -208,6 +211,43 @@ export const adminFetchUserList = () =>{
                     ? error.response.data.detail 
                     : error.message,
             })
+        }
+    }
+}
+
+export const deleteUserAction = (id) =>{
+    return async(dispatch, getState) => {
+        try{
+            dispatch({type:USER_DELETE_REQUEST})
+
+            // Get the Admin's Auth token 
+            const { userLogin: {userInfo:{token}} } = getState()
+            const authConfig = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            }
+            // Send the delete request to the backend 
+            const response = await axios.delete(
+                `/api/users/delete/${id}`,
+                authConfig
+            )
+
+            // Update the reducer 
+            dispatch({
+                type: USER_DELETE_SUCCESS,
+                payload: response.data,
+            })
+
+
+        }catch(error){
+            dispatch({
+                type:USER_DELETE_FAIL,
+                payload: error.response && error.response.data.detail 
+                    ? error.response.data.detail 
+                    : error.message,
+            }) 
         }
     }
 }

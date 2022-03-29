@@ -4,7 +4,8 @@ import { Table, Button} from "react-bootstrap";
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { useDispatch, useSelector } from "react-redux"; 
-import { adminFetchUserList } from "../redux/actions/userActions";
+import { adminFetchUserList, deleteUserAction } from "../redux/actions/userActions";
+import { USER_DELETE_RESET } from "../redux/constants/userConstants";
 
 const UserListScreen=()=>{
 
@@ -17,15 +18,23 @@ const UserListScreen=()=>{
     
     // Is the user Logged in 
     const { loggedIn } = useSelector(state => state.userLogin)
+    // Check whether user has been deleted]
+    const { userDeleteSuccess } = useSelector(state => state.deleteUser)
 
     useEffect(()=>{
         if(loggedIn){
             dispatch(adminFetchUserList())
+            if(userDeleteSuccess){
+                dispatch({type:USER_DELETE_RESET})
+            }
         }
-    },[dispatch, loggedIn])
+
+    },[dispatch, loggedIn, userDeleteSuccess])
 
     const deleteHandler = (id) =>{
-        console.log(`deleting user ${id}`)
+        if(window.confirm('Are you sure you want to delete this user')){
+            dispatch(deleteUserAction(id))
+        }
     }
 
     return(

@@ -16,7 +16,11 @@ import {
     USER_LIST_REQUEST,
     USER_LIST_SUCCESS,
     USER_LIST_FAIL,
-    USER_LIST_RESET
+    USER_LIST_RESET,
+    USER_DELETE_REQUEST,
+    USER_DELETE_SUCCESS,
+    USER_DELETE_FAIL,
+    USER_DELETE_RESET,
 } from '../constants/userConstants'
 
 export const userLoginReducer = ( state={loggedIn:false}, action) =>{
@@ -104,6 +108,32 @@ export const adminUserListReducer = (state = {adminUserList:[]}, action )=>{
         case USER_LIST_RESET:
             return {
                 adminUserList:[]
+            }
+        default:
+            return state
+    }
+}
+
+export const userDeleteReducer = (state = {userDeleteSuccess:false}, action)=>{
+    switch(action.type){
+        case USER_DELETE_REQUEST:
+            return{
+                ...state,
+                userDeleteLoading: true
+            }
+        case USER_DELETE_SUCCESS:
+            return{
+                userDeleteLoading: false,
+                userDeleteSuccess: true
+            }
+        case USER_DELETE_FAIL:
+            return{
+                userDeleteLoading: false,
+                userDeleteError: action.payload
+            }
+        case USER_DELETE_RESET:
+            return{
+                userDeleteSuccess:false
             }
         default:
             return state

@@ -9,7 +9,6 @@ const CartScreen = ({ match, location, history })=>{
     const dispatch = useDispatch()
     const { cartItems } = useSelector(state => state.cart)
 
-
     // const productId = match.params.id
     // const quantity = location.search 
     //                     ? parseInt(location.search.split('=')[1]) 
@@ -24,7 +23,6 @@ const CartScreen = ({ match, location, history })=>{
     const removeCartItem = (p_id) =>{
         dispatch(removeFromCart(p_id)) 
     }
-
 
     const checkoutHandler = ()=>{
         // go to login, however if loggedin will redirect to shipping page

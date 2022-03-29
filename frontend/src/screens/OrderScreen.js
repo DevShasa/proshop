@@ -9,9 +9,7 @@ import { PayPalButton } from "react-paypal-button-v2"
 import { ORDER_PAY_RESET } from "../redux/constants/orderConstants"
 import { fetchMyOrders } from "../redux/actions/orderActions";
 
-
 const OrderScreen = (props)=>{
-
 
     const orderId = props.match.params.id
     const dispatch = useDispatch()
