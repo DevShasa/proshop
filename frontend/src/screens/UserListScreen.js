@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button} from "react-bootstrap"; 
 import Loader from '../components/Loader';
@@ -8,6 +8,8 @@ import { adminFetchUserList, deleteUserAction } from "../redux/actions/userActio
 import { USER_DELETE_RESET } from "../redux/constants/userConstants";
 
 const UserListScreen=()=>{
+
+    const [deleteAlert,  setDeleteAlert] = useState(null)
 
     const dispatch = useDispatch()
     const { 
@@ -31,9 +33,10 @@ const UserListScreen=()=>{
 
     },[dispatch, loggedIn, userDeleteSuccess])
 
-    const deleteHandler = (id) =>{
+    const deleteHandler = (id, email) =>{
         if(window.confirm('Are you sure you want to delete this user')){
             dispatch(deleteUserAction(id))
+            setDeleteAlert(`User ${email} deleted sucessfully`)
         }
     }
 
@@ -46,7 +49,9 @@ const UserListScreen=()=>{
             ? <Message variant="info">{adminUserRequestError}</Message>
             : !loggedIn
             ? <Message variant="warning">You need to log in to perform that action</Message>
-            : (<Table striped bordered hover responsive className='table-sm'>
+            : (<div>
+                {deleteAlert && <Message variant="success">{deleteAlert}</Message>}
+                <Table striped bordered hover responsive className='table-sm'>
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -74,14 +79,15 @@ const UserListScreen=()=>{
                                             <i className="fas fa-edit"></i>
                                         </Button>
                                     </LinkContainer>
-                                    <Button variant="danger" className="btn-sm" onClick={() => deleteHandler(user._id)}>
+                                    <Button variant="danger" className="btn-sm" onClick={() => deleteHandler(user._id, user.email)}>
                                         <i className="fas fa-trash"></i>
                                     </Button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
-            </Table>)
+                </Table>
+            </div>)
             }
 
         </div>
