@@ -48,7 +48,7 @@ const AdminEditUserScreen = (props) =>{
                 : error
                 ? <Message>{error}</Message>
                 :(<div>
-                    <h2>{`Change ${name}'s details`}</h2>
+                    <h2>{`Change ${user.name}'s details`}</h2>
                     <Form onSubmit = {submitHandler}>
                         <Form.Group controlId='username' className="mt-2">
                             <Form.Label>Name</Form.Label>
