@@ -75,7 +75,7 @@ const AdminEditUserScreen = (props) =>{
                             <Form.Check 
                                 type="checkbox" 
                                 label="Admin"
-                                defaultChecked = {isAdmin} 
+                                checked = {isAdmin} 
                                 onChange = {(e) => setIsAdmin(e.currentTarget.checked)}
                             />
                         </Form.Group>
