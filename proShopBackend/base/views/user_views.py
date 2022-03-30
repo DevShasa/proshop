@@ -80,9 +80,13 @@ def getUsers(request):
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
 def adminGetUserById(request, id):
-    user = User.objects.get(id = id )
-    serializer = UserSerializer(user, many=False)
-    return Response(serializer.data)
+    try:
+        user = User.objects.get(id = id )
+        serializer = UserSerializer(user, many=False)
+        return Response(serializer.data)
+    except:
+        message = {'detail': 'User does not exist'}
+        return Response(message, status = status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT'])
 @permission_classes([IsAdminUser])

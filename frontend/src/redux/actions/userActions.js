@@ -19,7 +19,10 @@ import {
     USER_LIST_RESET,
     USER_DELETE_REQUEST,
     USER_DELETE_SUCCESS,
-    USER_DELETE_FAIL
+    USER_DELETE_FAIL,
+    ADMIN_GET_USER_REQUEST,
+    ADMIN_GET_USER_SUCCESS,
+    ADMIN_GET_USER_FAIL,
 } from '../constants/userConstants';
 import { FETCH_ORDER_DETAILS_RESET } from '../constants/orderConstants';
 
@@ -244,6 +247,37 @@ export const deleteUserAction = (id) =>{
         }catch(error){
             dispatch({
                 type:USER_DELETE_FAIL,
+                payload: error.response && error.response.data.detail 
+                    ? error.response.data.detail 
+                    : error.message,
+            }) 
+        }
+    }
+}
+
+export const adminGetUserByIdAction = (id) =>{
+    return async(dispatch, getState) =>{
+        try{
+            dispatch({type: ADMIN_GET_USER_REQUEST})
+
+            const { userLogin:{userInfo:{token}} } = getState()
+            const config = {
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+
+            const response = await axios.get( `/api/users/${id}`, config )
+
+            dispatch({
+                type: ADMIN_GET_USER_SUCCESS,
+                payload: response.data
+            })
+
+        }catch(error){
+            dispatch({
+                type:ADMIN_GET_USER_FAIL,
                 payload: error.response && error.response.data.detail 
                     ? error.response.data.detail 
                     : error.message,
