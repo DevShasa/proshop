@@ -24,6 +24,10 @@ import {
     ADMIN_GET_USER_REQUEST,
     ADMIN_GET_USER_SUCCESS,
     ADMIN_GET_USER_FAIL,
+    ADMIN_UPDATE_USER_REQUEST,
+    ADMIN_UPDATE_USER_SUCCESS,
+    ADMIN_UPDATE_USER_FAIL,
+    ADMIN_UPDATE_USER_RESET
 } from '../constants/userConstants'
 
 export const userLoginReducer = ( state={loggedIn:false}, action) =>{
@@ -155,6 +159,21 @@ export const adminGetUserReducer = (state = {user:{} }, action)=>{
             return {
                 user:{}
             }
+        default:
+            return state
+    }
+}
+
+export const adminUpdateUserReducer = (state={success:false,}, action) =>{
+    switch(action.type){
+        case ADMIN_UPDATE_USER_REQUEST:
+            return{...state, loading: true }
+        case ADMIN_UPDATE_USER_SUCCESS:
+            return{loading:false, success:true, newUserDetails: action.payload}
+        case ADMIN_UPDATE_USER_FAIL:
+            return {loading: false,success: false, userUpdateError: action.payload}
+        case ADMIN_UPDATE_USER_RESET:
+            return {success:false}
         default:
             return state
     }

@@ -23,6 +23,9 @@ import {
     ADMIN_GET_USER_REQUEST,
     ADMIN_GET_USER_SUCCESS,
     ADMIN_GET_USER_FAIL,
+    ADMIN_UPDATE_USER_REQUEST,
+    ADMIN_UPDATE_USER_SUCCESS,
+    ADMIN_UPDATE_USER_FAIL,
 } from '../constants/userConstants';
 import { FETCH_ORDER_DETAILS_RESET } from '../constants/orderConstants';
 
@@ -278,6 +281,39 @@ export const adminGetUserByIdAction = (id) =>{
         }catch(error){
             dispatch({
                 type:ADMIN_GET_USER_FAIL,
+                payload: error.response && error.response.data.detail 
+                    ? error.response.data.detail 
+                    : error.message,
+            }) 
+        }
+    }
+}
+
+export const adminUpdateUserAction = (id, newUserData) => {
+    return async(dispatch, getState) =>{
+        try{
+            dispatch({type:ADMIN_UPDATE_USER_REQUEST})
+
+            // Get admin credentials from loggedin instance
+            const {userLogin:{userInfo:{token}}} = getState()
+            const config = {
+                headers : {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+
+            // Send the data via axios
+            const response = axios.put(`/api/users/update/${id}/`, newUserData, config)
+
+            dispatch({
+                type: ADMIN_UPDATE_USER_SUCCESS,
+                payload: response.data
+            })
+
+        }catch(error){
+            dispatch({
+                type:ADMIN_UPDATE_USER_FAIL,
                 payload: error.response && error.response.data.detail 
                     ? error.response.data.detail 
                     : error.message,

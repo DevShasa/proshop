@@ -100,7 +100,7 @@ def adminUpdateUser(request, id):
     user.is_staff = data['isAdmin']
     user.save()
 
-    serializer = UserSerializerWithToken(user, many=False)
+    serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 
 @api_view(['DELETE'])
