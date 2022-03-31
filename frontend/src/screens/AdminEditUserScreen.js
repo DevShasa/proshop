@@ -2,16 +2,18 @@ import React, {useState, useEffect} from 'react';
 import { Button, Form } from 'react-bootstrap';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { adminGetUserByIdAction, adminUpdateUserAction } from '../redux/actions/userActions';
 import FormContainer from '../components/FormContainer';
-import { ADMIN_UPDATE_USER_RESET } from "../redux/constants/userConstants"; 
+import { ADMIN_UPDATE_USER_RESET } from "../redux/constants/userConstants";
+
 const AdminEditUserScreen = (props) =>{
 
     const dispatch = useDispatch()
     const { loading, user, error } = useSelector(state =>state.adminGetUser)
     const { userInfo } = useSelector(state => state.userLogin)
-    const { success, userUpdateError } = useSelector(state => state.adminUserUpdate)
+    const { success, userUpdateError, updateloading } = useSelector(state => state.adminUserUpdate)
 
     const [ email, setEmail ] = useState("")
     const [ name, setName ] = useState("")
@@ -30,12 +32,9 @@ const AdminEditUserScreen = (props) =>{
                 setName(user.name)
                 setIsAdmin(user.isAdmin)
             }
-
         }
     }, [dispatch, props.match.params.id, userInfo, props.history, user, success])
 
-
-    
 
     function submitHandler(e){
         e.preventDefault()
@@ -52,7 +51,9 @@ const AdminEditUserScreen = (props) =>{
                 : error
                 ? <Message>{error}</Message>
                 :(<div>
+                    <Link to="/admin/userlist">go back</Link>
                     <h2>{`Change ${user.name}'s details`}</h2>
+                    { updateloading && <Loader />}
                     { userUpdateError && <Message variant="danger">{userUpdateError}</Message>}
                     <Form onSubmit = {submitHandler}>
                         <Form.Group controlId='username' className="mt-2">
@@ -87,7 +88,7 @@ const AdminEditUserScreen = (props) =>{
                         </Form.Group>
 
                         <Button variant="primary" type="submit">
-                            Submit
+                            Update 
                         </Button>
                     </Form>
                 </div>

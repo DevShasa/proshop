@@ -167,11 +167,11 @@ export const adminGetUserReducer = (state = {user:{} }, action)=>{
 export const adminUpdateUserReducer = (state={success:false,}, action) =>{
     switch(action.type){
         case ADMIN_UPDATE_USER_REQUEST:
-            return{...state, loading: true }
+            return{...state, updateloading: true }
         case ADMIN_UPDATE_USER_SUCCESS:
-            return{loading:false, success:true, newUserDetails: action.payload}
+            return{updateloading:false, success:true, newUserDetails: action.payload}
         case ADMIN_UPDATE_USER_FAIL:
-            return {loading: false,success: false, userUpdateError: action.payload}
+            return {updateloading: false,success: false, userUpdateError: action.payload}
         case ADMIN_UPDATE_USER_RESET:
             return {success:false}
         default:
