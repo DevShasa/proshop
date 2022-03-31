@@ -47,7 +47,7 @@ const cart_from_localStorage = localStorage.getItem('cartItems')
 const user_from_localStorage = localStorage.getItem('userInfo')
                                 //convert into object
                                 ? JSON.parse(localStorage.getItem('userInfo'))
-                                : null
+                                : false
 
 const shipping_from_localStorage = localStorage.getItem('shippingAddress')
                                     //convert into object
