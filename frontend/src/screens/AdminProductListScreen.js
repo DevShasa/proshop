@@ -3,7 +3,7 @@ import { Table, Button, Row, Col } from "react-bootstrap";
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { useDispatch, useSelector } from "react-redux"; 
-import { listProducts } from '../redux/actions/productActions';
+import { listProducts, deleteProductAction } from '../redux/actions/productActions';
 import { Link } from 'react-router-dom'
 
 const AdminProductListScreen = (props) =>{
@@ -11,11 +11,15 @@ const AdminProductListScreen = (props) =>{
     const dispatch = useDispatch()
     const { loading, products, error } = useSelector(state => state.productList)
     const { loggedIn, userInfo } = useSelector(state => state.userLogin)
+    const { deleteLoading, deleteSuccess, deleteError} = useSelector(state => state.deleteProduct)
 
     function createProductHandler(){}
 
     function deleteHandler(id){
-        console.log(`delete>> ${id}`)
+        if(window.confirm('Are you sure you want to delete this product')){
+            dispatch(deleteProductAction(id))
+        }
+        
     }
 
     useEffect(()=>{
@@ -24,7 +28,7 @@ const AdminProductListScreen = (props) =>{
         }else{
             props.history.push('/login')
         }
-    },[dispatch,loggedIn,props.history, userInfo])
+    },[dispatch,loggedIn,props.history, userInfo, deleteSuccess])
 
     return(
         <div>
@@ -33,10 +37,14 @@ const AdminProductListScreen = (props) =>{
                     <h1>Products</h1>
                 
                     <Button className="my-3" onClick={createProductHandler}>
-                        <i className="fas fa-plus"></i>Create Product
+                        <i className="fas fa-plus"></i> Create Product
                     </Button>
                 </Col>
             </Row>
+
+            {deleteLoading && <Loader />}
+            {deleteError && <Message variant="warning">{deleteError}</Message>}
+
             {loading
                 ? <Loader />
                 : error
