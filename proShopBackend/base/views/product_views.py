@@ -3,6 +3,7 @@ from base.serializers import ProductSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser
+from rest_framework import status  
 
 @api_view(['GET'])
 def getProducts(request):
@@ -35,8 +36,34 @@ def createProduct(request):
         brand = 'Sample Brand',
         countInStock = 0,
         category = 'Sample category', 
-        description =  ''
+        description =  'lorem ipsum dolor sit amet'
     )
     
     serializer = ProductSerializer(product, many=False )
     return Response(serializer.data)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAdminUser])
+def updateProduct(request, id):
+    try:
+        product = Product.objects.get(_id = id)
+        data = request.data
+
+        product.name = data['name']
+        product.brand = data['brand']
+        product.category = data['category']
+        product.description = data['description']
+        product.price = data['price']
+        product.countInStock = data['countInStock']
+
+        product.save()
+
+        serializer = ProductSerializer(product, many=False )
+        return Response(serializer.data)
+
+    except:
+        message = {
+            'detail': 'Product does not exist'
+        }
+        return Response(message, status = status.HTTP_404_NOT_FOUND)
