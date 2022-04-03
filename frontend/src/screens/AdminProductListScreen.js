@@ -3,8 +3,12 @@ import { Table, Button, Row, Col } from "react-bootstrap";
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { useDispatch, useSelector } from "react-redux"; 
-import { listProducts, deleteProductAction } from '../redux/actions/productActions';
+import { listProducts,
+        deleteProductAction,
+        createProductAction
+    } from '../redux/actions/productActions';
 import { Link } from 'react-router-dom'
+import { PRODUCT_CREATE_RESET } from '../redux/constants/productConstants'
 
 const AdminProductListScreen = (props) =>{
 
@@ -12,23 +16,40 @@ const AdminProductListScreen = (props) =>{
     const { loading, products, error } = useSelector(state => state.productList)
     const { loggedIn, userInfo } = useSelector(state => state.userLogin)
     const { deleteLoading, deleteSuccess, deleteError} = useSelector(state => state.deleteProduct)
+    const { createLoading,  createSuccess, createdProduct, createError} = useSelector(state => state.productCreate)
 
-    function createProductHandler(){}
+    function createProductHandler(){
+        dispatch(createProductAction())
+    }
 
     function deleteHandler(id){
         if(window.confirm('Are you sure you want to delete this product')){
             dispatch(deleteProductAction(id))
         }
-        
     }
 
     useEffect(()=>{
-        if(userInfo && userInfo.isAdmin){
-            dispatch(listProducts())
-        }else{
+        // Before{ anything else, reset the product details 
+        dispatch({type: PRODUCT_CREATE_RESET })
+
+        // if(userInfo && userInfo.isAdmin){
+        //     dispatch(listProducts())
+        // }else{
+        //     props.history.push('/login')
+        // }
+
+        if(!userInfo.isAdmin) {
             props.history.push('/login')
         }
-    },[dispatch,loggedIn,props.history, userInfo, deleteSuccess])
+
+        if(createSuccess){
+            // redirect to product edit page
+            props.history.push(`/admin/product/${createdProduct._id}/edit`)
+        }else{
+            dispatch(listProducts())
+        }
+
+    },[dispatch,loggedIn,props.history, userInfo, deleteSuccess, createSuccess, createdProduct])
 
     return(
         <div>
@@ -44,6 +65,9 @@ const AdminProductListScreen = (props) =>{
 
             {deleteLoading && <Loader />}
             {deleteError && <Message variant="warning">{deleteError}</Message>}
+
+            {createLoading && <Loader />}
+            {createError && <Message variant="warning">{createError}</Message>}
 
             {loading
                 ? <Loader />
