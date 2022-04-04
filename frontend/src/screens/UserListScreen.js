@@ -25,6 +25,7 @@ const UserListScreen=()=>{
 
     useEffect(()=>{
         if(loggedIn){
+            // if not admin server will issue an error 
             dispatch(adminFetchUserList())
             if(userDeleteSuccess){
                 dispatch({type:USER_DELETE_RESET})

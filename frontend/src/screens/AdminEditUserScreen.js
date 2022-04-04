@@ -11,6 +11,7 @@ import { ADMIN_UPDATE_USER_RESET } from "../redux/constants/userConstants";
 const AdminEditUserScreen = (props) =>{
 
     const dispatch = useDispatch()
+    const userId = props.match.params.id
     const { loading, user, error } = useSelector(state =>state.adminGetUser)
     const { userInfo } = useSelector(state => state.userLogin)
     const { success, userUpdateError, updateloading } = useSelector(state => state.adminUserUpdate)
@@ -18,23 +19,28 @@ const AdminEditUserScreen = (props) =>{
     const [ email, setEmail ] = useState("")
     const [ name, setName ] = useState("")
     const [isAdmin, setIsAdmin] = useState(false)
+    const [ adminError, setAdminError ] = useState(false)
 
     useEffect(()=>{
         if(!userInfo){
-            props.history.push('/login')
+            // User not logged in 
+            props.history.push(`/login?redirect=admin/user/${userId}/edit`)
+        }else if(!userInfo.isAdmin){
+            // User logged in but not admin
+            setAdminError(true)
         }else{
-            if(!user || !user.name || user._id !==  parseInt(props.match.params.id)  || success){
+            // User is loggedin and admin 
+            if(!user.name || user._id !==  parseInt(userId)  || success){
                 // If user does not exist, does not match url id, details have already changed
                 dispatch({type: ADMIN_UPDATE_USER_RESET}) 
-                dispatch(adminGetUserByIdAction(props.match.params.id))
+                dispatch(adminGetUserByIdAction(userId))
             }else{
                 setEmail(user.email)
                 setName(user.name)
                 setIsAdmin(user.isAdmin)
             }
         }
-    }, [dispatch, props.match.params.id, userInfo, props.history, user, success])
-
+    }, [dispatch, props, userInfo, user, success,userId])
 
     function submitHandler(e){
         e.preventDefault()
@@ -46,12 +52,14 @@ const AdminEditUserScreen = (props) =>{
 
     return(
         <FormContainer>
+            <Link to="/admin/userlist">go back</Link>
             {loading 
                 ? <Loader />
                 : error
                 ? <Message>{error}</Message>
+                : adminError
+                ? <Message>Not authorised to access this page</Message>
                 :(<div>
-                    <Link to="/admin/userlist">go back</Link>
                     <h2>{`Change ${user.name}'s details`}</h2>
                     { updateloading && <Loader />}
                     { userUpdateError && <Message variant="danger">{userUpdateError}</Message>}

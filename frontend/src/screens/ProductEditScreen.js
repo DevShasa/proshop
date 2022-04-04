@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-// import { Button, Form } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { Link } from "react-router-dom";
@@ -69,8 +69,88 @@ const ProductEditScreen = (props) =>{
                 ? <Message variant = "danger">Not Authorised to access this page</Message>
                 : (
                     <FormContainer>
-                        <p>{name}</p>
-                        <p>{description}</p>
+                        <Form onSubmit={submitHandler}>
+                            <Form.Group controlId='name' className="mt-2">
+                                <Form.Label>Name</Form.Label>
+                                <Form.Control
+                                    type = "text"
+                                    placeholder = "Enter Name"
+                                    value = {name}
+                                    onChange = {(e) => setName(e.target.value)}
+                                >
+                                </Form.Control>
+                            </Form.Group>
+
+                            <Form.Group controlId='brand' className="mt-2">
+                                <Form.Label>Brand</Form.Label>
+                                <Form.Control
+                                    type = "text"
+                                    placeholder = "Enter brand"
+                                    value = {brand}
+                                    onChange = {(e) => setBrand(e.target.value)}
+                                >
+                                </Form.Control>
+                            </Form.Group>
+
+                            <Form.Group controlId='category' className="mt-2">
+                                <Form.Label>Category</Form.Label>
+                                <Form.Control
+                                    type = "text"
+                                    placeholder = "Enter category"
+                                    value = {category}
+                                    onChange = {(e) => setCategory(e.target.value)}
+                                >
+                                </Form.Control>
+                            </Form.Group>
+                            
+                            <Form.Group controlId='description' className="mt-2">
+                                <Form.Label>Description</Form.Label>
+                                <Form.Control
+                                    type = "text"
+                                    placeholder = "Enter description"
+                                    value = {description}
+                                    onChange = {(e) => setDescription(e.target.value)}
+                                >
+                                </Form.Control>
+                            </Form.Group>
+
+                            <Form.Group controlId='price' className="mt-2">
+                                <Form.Label>Price</Form.Label>
+                                <Form.Control
+                                    type = "number"
+                                    placeholder = "Enter price"
+                                    value = {price}
+                                    onChange = {(e) => setPrice(e.target.value)}
+                                >
+                                </Form.Control>
+                            </Form.Group>
+                            
+                            <Form.Group controlId='countInStock' className="mt-2">
+                                <Form.Label>Stock</Form.Label>
+                                <Form.Control
+                                    type = "number"
+                                    placeholder = "Enter stock"
+                                    value = {countInStock}
+                                    onChange = {(e) => setCountInStock(e.target.value)}
+                                >
+                                </Form.Control>
+                            </Form.Group>
+
+                            <Form.Group controlId='image' className="mt-2">
+                                <Form.Label>Image</Form.Label>
+                                <Form.Control
+                                    type = "text"
+                                    placeholder = "Enter image"
+                                    value = {image}
+                                    onChange = {(e) => setImage(e.target.value)}
+                                >
+                                </Form.Control>
+                            </Form.Group>
+                            
+                            <Button variant="primary" type="submit" className="mt-2">
+                                Update 
+                            </Button>
+                        </Form>
                     </FormContainer>
                 )
             }
