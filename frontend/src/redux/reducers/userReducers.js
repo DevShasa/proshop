@@ -30,7 +30,7 @@ import {
     ADMIN_UPDATE_USER_RESET
 } from '../constants/userConstants'
 
-export const userLoginReducer = ( state={loggedIn:false}, action) =>{
+export const userLoginReducer = ( state={loggedIn:false,userInfo:false }, action) =>{
     // state = {loading, userinfo, error}
     switch(action.type){
         case USER_LOGIN_REQUEST:
@@ -39,12 +39,22 @@ export const userLoginReducer = ( state={loggedIn:false}, action) =>{
                 loading: true 
             }
         case USER_LOGIN_SUCCESS:
-            return {loading: false, userInfo: action.payload, loggedIn: true}
+            return {    
+                loading: false, 
+                userInfo: action.payload, 
+                loggedIn: true
+            }
         case USER_LOGIN_FAIL:
-            return {loading:false, error: action.payload, loggedIn:false}
+            return { 
+                loading:false, 
+                error: action.payload, 
+                loggedIn:false,
+                userInfo:false 
+            }
         case USER_LOGOUT:
             return {
-                loggedIn: false
+                loggedIn: false,
+                userInfo:false 
             }
         default:
             return state

@@ -29,9 +29,6 @@ const AdminProductListScreen = (props) =>{
     }
 
     useEffect(()=>{
-        // Before{ anything else, reset the product details 
-        dispatch({type: PRODUCT_CREATE_RESET })
-
         // if(userInfo && userInfo.isAdmin){
         //     dispatch(listProducts())
         // }else{
@@ -43,11 +40,13 @@ const AdminProductListScreen = (props) =>{
         }
 
         if(createSuccess){
-            // redirect to product edit page
             props.history.push(`/admin/product/${createdProduct._id}/edit`)
         }else{
             dispatch(listProducts())
         }
+
+        dispatch({type: PRODUCT_CREATE_RESET })
+
 
     },[dispatch,loggedIn,props.history, userInfo, deleteSuccess, createSuccess, createdProduct])
 
