@@ -20,12 +20,12 @@ const ProductEditScreen = (props) =>{
     const [ countInStock, setCountInStock ] = useState(0)
     const [ image, setImage ] = useState("")
     const [ adminError, setAdminError ] = useState(false)
-
+    const [updated, setIsUpdated] = useState(false)
     const dispatch = useDispatch()
 
     const { userInfo } = useSelector(state => state.userLogin)
     const { loading, product, error } = useSelector(state => state.productDetail)
-    const { editSuccess } = useSelector(state=> state.editProduct)
+    const { editSuccess, editError,  editLoading} = useSelector(state=> state.editProduct)
 
     useEffect(()=>{
         if(!userInfo){
@@ -36,11 +36,11 @@ const ProductEditScreen = (props) =>{
             if(!userInfo.isAdmin){
                 setAdminError(true)
             }else{
+                if(editSuccess){setIsUpdated(true)}
                 // product exists and matches the id passed in url
                 if(!product.name || product._id !== Number(productID) || editSuccess){
-                    dispatch(listProductDetail(productID))
                     dispatch({type: PRODUCT_EDIT_RESET})
-
+                    dispatch(listProductDetail(productID))
                 }else{
                     setName(product.name)
                     setBrand(product.brand)
@@ -73,14 +73,25 @@ const ProductEditScreen = (props) =>{
         <div>
             <h1>Edit Product</h1>
             <Link to="/admin/productlist">go back</Link>
+
+            {editError && <Message variant="danger">{editError}</Message>}
+
             {loading
                 ? <Loader />
                 : error
                 ? <Message variant = "danger">{error}</Message>
                 : adminError
                 ? <Message variant = "danger">Not Authorised to access this page</Message>
+                : editLoading
+                ? <Loader />
                 : (
                     <FormContainer>
+                        {updated && (
+                            <Message variant="primary">
+                                Product updated {` `}
+                                <Link to="/admin/productlist"> go back</Link>
+                            </Message>
+                        )}
                         <Form onSubmit={submitHandler}>
                             <Form.Group controlId='name' className="mt-2">
                                 <Form.Label>Name</Form.Label>
