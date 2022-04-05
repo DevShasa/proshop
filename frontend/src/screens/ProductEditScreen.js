@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
+import axios from 'axios';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { Link } from "react-router-dom";
@@ -21,6 +22,8 @@ const ProductEditScreen = (props) =>{
     const [ image, setImage ] = useState("")
     const [ adminError, setAdminError ] = useState(false)
     const [updated, setIsUpdated] = useState(false)
+    const [uploading, seUploading] = useState(false)
+
     const dispatch = useDispatch()
 
     const { userInfo } = useSelector(state => state.userLogin)
@@ -68,6 +71,29 @@ const ProductEditScreen = (props) =>{
         // console.log(newData)
         dispatch(editProductAction(productID, newData))
     }
+
+    async function uploadFileHandler (e){ 
+        const file = e.target.files[0]
+        const formData = new FormData()
+        
+        // creates a key value pair
+        formData.append('newProductImage', file)
+        formData.append('product_id', productID) 
+
+        seUploading(true)
+
+        try{
+            const config = { headers:{ 'Content-Type': 'multipart/form-data' }}
+            const { data } = await axios.post( '/api/products/upload/', formData, config )
+            console.log(formData)
+
+            setImage(data)
+            seUploading(false)
+
+        }catch(error){
+            seUploading(false)
+        }
+    }   
 
     return(
         <div>
@@ -168,6 +194,14 @@ const ProductEditScreen = (props) =>{
                                     onChange = {(e) => setImage(e.target.value)}
                                 >
                                 </Form.Control>
+                                <Form.Control
+                                    type = "file"
+                                    // id='image-file'
+                                    label = 'Choose File'
+                                    custom = "true"
+                                    onChange = {uploadFileHandler}
+                                ></Form.Control>
+                                {uploading && <Loader/>}
                             </Form.Group>
                             
                             <Button variant="primary" type="submit" className="mt-2">

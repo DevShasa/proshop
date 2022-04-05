@@ -67,3 +67,15 @@ def updateProduct(request, id):
             'detail': 'Product does not exist'
         }
         return Response(message, status = status.HTTP_404_NOT_FOUND)
+
+@api_view(['POST'])
+def uploadImage(request):
+    data = request.data
+    product_id = data['product_id']
+    product = Product.objects.get(_id = product_id)
+    # product.image = request.FILES.get('image')
+    print('<<REQUEST>> ', request.FILES)
+    product.image = data['newProductImage']
+    product.save()
+
+    return Response('Image was Uploaded')
