@@ -14,8 +14,8 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 @api_view(['POST'])
 def registerUser(request):
-    # print('LOOKIE HERE register>>> ', request.data,)
-    # print('HEADER register>>> ', request.headers.get('Content-Type'),)
+    # print('<<REQUEST.DATA>> ', request.data,)
+    # print('<<CONTENT TYPE>> ', request.headers.get('Content-Type'),)
 
     data = request.data
     try:

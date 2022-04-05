@@ -5,7 +5,8 @@ import Message from '../components/Message';
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import FormContainer from '../components/FormContainer';
-import { listProductDetail } from '../redux/actions/productActions';
+import { listProductDetail, editProductAction } from '../redux/actions/productActions';
+import { PRODUCT_EDIT_RESET } from '../redux/constants/productConstants';
 
 const ProductEditScreen = (props) =>{
 
@@ -24,6 +25,7 @@ const ProductEditScreen = (props) =>{
 
     const { userInfo } = useSelector(state => state.userLogin)
     const { loading, product, error } = useSelector(state => state.productDetail)
+    const { editSuccess } = useSelector(state=> state.editProduct)
 
     useEffect(()=>{
         if(!userInfo){
@@ -35,8 +37,10 @@ const ProductEditScreen = (props) =>{
                 setAdminError(true)
             }else{
                 // product exists and matches the id passed in url
-                if(!product.name || product._id !== Number(productID)){
+                if(!product.name || product._id !== Number(productID) || editSuccess){
                     dispatch(listProductDetail(productID))
+                    dispatch({type: PRODUCT_EDIT_RESET})
+
                 }else{
                     setName(product.name)
                     setBrand(product.brand)
@@ -48,13 +52,21 @@ const ProductEditScreen = (props) =>{
                 }
             }
         }
-    },[product, dispatch,productID, props, userInfo])
+    },[product, dispatch,productID, props, userInfo, editSuccess])
 
     function submitHandler(e){
         e.preventDefault()
-        console.log({
-            name, brand, category, image, price, countInStock, description
-        })
+        const newData = {
+            name,
+            brand, 
+            category, 
+            image, 
+            price, 
+            countInStock: Number(countInStock), 
+            description
+        }
+        // console.log(newData)
+        dispatch(editProductAction(productID, newData))
     }
 
     return(
@@ -85,7 +97,7 @@ const ProductEditScreen = (props) =>{
                                 <Form.Label>Brand</Form.Label>
                                 <Form.Control
                                     type = "text"
-                                    placeholder = "Enter brand"
+                                    placeholder = "Enter Brand"
                                     value = {brand}
                                     onChange = {(e) => setBrand(e.target.value)}
                                 >
@@ -96,7 +108,7 @@ const ProductEditScreen = (props) =>{
                                 <Form.Label>Category</Form.Label>
                                 <Form.Control
                                     type = "text"
-                                    placeholder = "Enter category"
+                                    placeholder = "Enter Category"
                                     value = {category}
                                     onChange = {(e) => setCategory(e.target.value)}
                                 >
@@ -107,7 +119,7 @@ const ProductEditScreen = (props) =>{
                                 <Form.Label>Description</Form.Label>
                                 <Form.Control
                                     type = "text"
-                                    placeholder = "Enter description"
+                                    placeholder = "Enter Cescription"
                                     value = {description}
                                     onChange = {(e) => setDescription(e.target.value)}
                                 >
@@ -140,7 +152,7 @@ const ProductEditScreen = (props) =>{
                                 <Form.Label>Image</Form.Label>
                                 <Form.Control
                                     type = "text"
-                                    placeholder = "Enter image"
+                                    placeholder = "Enter Image"
                                     value = {image}
                                     onChange = {(e) => setImage(e.target.value)}
                                 >

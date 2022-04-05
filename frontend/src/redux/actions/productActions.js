@@ -12,6 +12,9 @@ import {
     PRODUCT_CREATE_REQUEST,
     PRODUCT_CREATE_SUCCESS,
     PRODUCT_CREATE_FAIL,
+    PRODUCT_EDIT_REQUEST,
+    PRODUCT_EDIT_SUCCESS,
+    PRODUCT_EDIT_FAIL,
 } from '../constants/productConstants'
 
 export const listProducts = () => async (dispatch)=> {
@@ -114,6 +117,39 @@ export const createProductAction = () => async (dispatch, getState) => {
     }catch(error){
         dispatch({
             type:PRODUCT_CREATE_FAIL,
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.response
+        })
+    }
+}
+
+export const editProductAction = (id, newData) => async (dispatch, getState) =>{
+    try{
+        dispatch({type:PRODUCT_EDIT_REQUEST})
+
+        const { userLogin:{userInfo:{token}} } = getState()
+        const config = {
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }
+
+        const response = await axios.put(
+            `/api/products/update/${id}/`,
+            newData,
+            config
+        )
+
+        dispatch({
+            type:PRODUCT_EDIT_SUCCESS,
+            payload: response.data
+        })
+
+    }catch(error){
+        dispatch({
+            type:PRODUCT_EDIT_FAIL,
             payload: error.response && error.response.data.detail
                 ? error.response.data.detail
                 : error.response

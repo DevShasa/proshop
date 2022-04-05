@@ -96,7 +96,7 @@ const AdminEditUserScreen = (props) =>{
                         </Form.Group>
 
                         <Button variant="primary" type="submit">
-                            Update 
+                            Update
                         </Button>
                     </Form>
                 </div>
