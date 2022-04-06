@@ -14,6 +14,9 @@ import {
     LIST_MY_ORDER_REQUEST,
     LIST_MY_ORDER_SUCCESS,
     LIST_MY_ORDER_FAIL,
+    LIST_ALL_ORDERS_REQUEST,
+    LIST_ALL_ORDERS_SUCCESS,
+    LIST_ALL_ORDERS_FAIL
 } from '../constants/orderConstants'
 import { USER_LOGOUT } from "../constants/userConstants"
 
@@ -110,6 +113,31 @@ export const userOrderList = (state ={ordersList:[]}, action )=>{
         case USER_LOGOUT:
             return{
                 ordersList:[]
+            }
+        default:
+            return state
+    }
+}
+
+export const allOrdersReducer = (state = {orders:[]}, action) =>{
+    switch(action.type){
+        case LIST_ALL_ORDERS_REQUEST:
+            return{
+                ordersLoading: true
+            }
+        case LIST_ALL_ORDERS_SUCCESS:
+            return{
+                ordersLoading: false,
+                orders: action.payload
+            }
+        case LIST_ALL_ORDERS_FAIL:
+            return{
+                ordersLoading: false,
+                ordersError: action.payload
+            }
+        case USER_LOGOUT:
+            return{
+                orders:[]
             }
         default:
             return state

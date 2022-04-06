@@ -89,3 +89,10 @@ def updateOrderToPaid(request, pk):
     return Response('Order successfully paid')
     # serializr = OrderSerializer(order, many=False)
     # return Response(serializr.data)
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def adminGetOrders(request):
+    orders = Order.objects.all()
+    serializer = OrderSerializer(orders, many=True)
+    return Response(serializer.data)
