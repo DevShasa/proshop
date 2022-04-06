@@ -191,7 +191,8 @@ const ProductEditScreen = (props) =>{
                                     type = "text"
                                     placeholder = "Enter Image"
                                     value = {image}
-                                    onChange = {(e) => setImage(e.target.value)}
+                                    disabled
+                                    readOnly
                                 >
                                 </Form.Control>
                                 <Form.Control

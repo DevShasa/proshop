@@ -9,6 +9,8 @@ import { ORDER_CREATE_RESET } from "../redux/constants/orderConstants";
 
 const PlaceOrderScreen = (props)=>{
 
+    // if success is true, order has been sucessfuly saved to database...
+    // ..push the user to the final checkout page, which fetches the new order from db 
     const { order, error, success } = useSelector(state=> state.orderCreate)
 
     const dispatch = useDispatch()
