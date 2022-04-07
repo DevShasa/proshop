@@ -1,13 +1,16 @@
 import React, { useEffect } from 'react';
-import {Row, Col, ListGroup, Image, Card } from "react-bootstrap"; 
+import {Row, Col, ListGroup, Image, Card, Button } from "react-bootstrap"; 
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux"; 
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { getOrderDetails, payOrder } from "../redux/actions/orderActions";
 import { PayPalButton } from "react-paypal-button-v2"
-import { ORDER_PAY_RESET } from "../redux/constants/orderConstants"
-import { fetchMyOrders } from "../redux/actions/orderActions";
+import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from "../redux/constants/orderConstants"
+import { getOrderDetails,
+        payOrder, 
+        markOrderAsDelivered,
+        fetchMyOrders 
+    } from "../redux/actions/orderActions";
 
 const OrderScreen = (props)=>{
 
@@ -21,8 +24,8 @@ const OrderScreen = (props)=>{
     }
 
     const { loading, error, order } = useSelector(state=> state.orderDetails)
-
     const  orderPay = useSelector(state=> state.orderPay)
+    const { deliverLoading, deliverSuccess, deliverError } = useSelector(state=> state.orderDeliver)
 
     if(!loading && !error){
         // Make the calculations only when there is an orderitem 
@@ -32,22 +35,27 @@ const OrderScreen = (props)=>{
     }
 
     useEffect(()=>{
-        if(!order || orderPay.success ||order._id !== Number(orderId)){
+        if(!order || orderPay.success ||order._id !== Number(orderId) || deliverSuccess){
             // order does not exist
             // order exists in redux but does not match oderId
             // order has been sucessfuly paid
             dispatch({type: ORDER_PAY_RESET})
+            dispatch({type: ORDER_DELIVER_RESET})
             if(loggedIn){
                 dispatch(getOrderDetails(orderId))
             }
         }
-    },[dispatch,orderId, order, orderPay.success, loggedIn])
+    },[dispatch,orderId, order, orderPay.success, loggedIn, deliverSuccess])
 
     // update order to paid and update orderpay.success
     const successPaymentHandler = (paymentResult) =>{
         dispatch(payOrder(orderId, paymentResult))
         // update orders for profile page
         dispatch( fetchMyOrders() )
+    }
+
+    function deliverOrder(id){
+        dispatch(markOrderAsDelivered(id))
     }
 
     return loading 
@@ -157,6 +165,16 @@ const OrderScreen = (props)=>{
                                                 clientId: "AWAL9GGMp4Hm-r23tEBSmiMP5D9HGQkI9YuICm-fdKXokb6qJWDLQoA97U89WgatSUTuQGh5sh1elllz"
                                             }}
                                         />
+                                    </ListGroup.Item>
+                                )}
+                                {!order.isDelivered &&(
+                                    <ListGroup.Item>
+                                        <Button 
+                                            onClick={() => deliverOrder(order._id)} 
+                                            style = {{width: '100%'}}
+                                        >
+                                            Mark As Delivered
+                                        </Button>
                                     </ListGroup.Item>
                                 )}
                             </ListGroup>

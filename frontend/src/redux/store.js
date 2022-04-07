@@ -23,6 +23,7 @@ import  {
     orderPayReducer,
     userOrderList,
     allOrdersReducer,
+    orderDeliverReducer,
 } from './reducers/orderReducers';
 
 const middleware = [thunk]
@@ -45,7 +46,8 @@ const reducer  = combineReducers({
         deleteProduct: productDeleteReducer,
         productCreate: productCreateReducer,
         editProduct: productEditReducer,
-        allOrders: allOrdersReducer
+        allOrders: allOrdersReducer,
+        orderDeliver: orderDeliverReducer,
 })
 
 const cart_from_localStorage = localStorage.getItem('cartItems')

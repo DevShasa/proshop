@@ -14,7 +14,10 @@ import {
     LIST_MY_ORDER_FAIL,
     LIST_ALL_ORDERS_REQUEST,
     LIST_ALL_ORDERS_SUCCESS,
-    LIST_ALL_ORDERS_FAIL
+    LIST_ALL_ORDERS_FAIL,
+    ORDER_DELIVER_REQUEST,
+    ORDER_DELIVER_SUCCESS,
+    ORDER_DELIVER_FAIL,
 } from '../constants/orderConstants'
 import { CART_CLEAR_ITEMS } from '../constants/cartConstants';
 
@@ -170,7 +173,7 @@ export const listAllProductsAction = () => async (dispatch, getState) =>{
         const config = {
             headers:{
                 'Content-type': 'application/json',
-                'Authorization': 'Bearer '+ token
+                Authorization: 'Bearer '+ token
             }
         }
 
@@ -188,5 +191,40 @@ export const listAllProductsAction = () => async (dispatch, getState) =>{
                 ? error.response.data.detail
                 : error.message
         })
+    }
+}
+
+export const markOrderAsDelivered= (id) => {
+    return async (dispatch, getState) => {
+        try{
+            dispatch({type: ORDER_DELIVER_REQUEST})
+            
+            const { userLogin:{userInfo:{token}} } = getState()
+            const config = {
+                headers:{
+                    'Content-type': 'application/json',
+                    Authorization: 'Bearer '+ token
+                }
+            }
+            
+            const response = await axios.put(
+                `/api/orders/${id}/deliver/`,
+                {},
+                config
+            )
+
+            dispatch({
+                type: ORDER_DELIVER_SUCCESS,
+                payload: response.data
+            })
+
+        }catch(error){
+            dispatch({
+                type: ORDER_DELIVER_FAIL,
+                payload: error.response && error.response.data.detail 
+                ? error.response.data.detail 
+                : error.message
+            })
+        }
     }
 }

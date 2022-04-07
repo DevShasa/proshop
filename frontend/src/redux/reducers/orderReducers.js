@@ -16,7 +16,11 @@ import {
     LIST_MY_ORDER_FAIL,
     LIST_ALL_ORDERS_REQUEST,
     LIST_ALL_ORDERS_SUCCESS,
-    LIST_ALL_ORDERS_FAIL
+    LIST_ALL_ORDERS_FAIL,
+    ORDER_DELIVER_REQUEST,
+    ORDER_DELIVER_SUCCESS,
+    ORDER_DELIVER_FAIL,
+    ORDER_DELIVER_RESET
 } from '../constants/orderConstants'
 import { USER_LOGOUT } from "../constants/userConstants"
 
@@ -139,6 +143,29 @@ export const allOrdersReducer = (state = {orders:[]}, action) =>{
             return{
                 orders:[]
             }
+        default:
+            return state
+    }
+}
+
+export const orderDeliverReducer = (state = {}, action) =>{
+    switch(action.type){
+        case ORDER_DELIVER_REQUEST:
+            return{
+                deliverLoading: true
+            }
+        case ORDER_DELIVER_SUCCESS:
+            return{
+                deliverLoading:false,
+                deliverSuccess: true
+            } 
+        case ORDER_DELIVER_FAIL:
+            return{
+                deliverLoading: false,
+                deliverError: action.payload
+            }
+        case ORDER_DELIVER_RESET:
+            return {}
         default:
             return state
     }

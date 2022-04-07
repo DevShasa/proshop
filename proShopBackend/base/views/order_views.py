@@ -93,6 +93,26 @@ def updateOrderToPaid(request, pk):
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
 def adminGetOrders(request):
+    # print (request.META['HTTP_AUTHORIZATION'])
+
     orders = Order.objects.all()
     serializer = OrderSerializer(orders, many=True)
     return Response(serializer.data)
+
+
+@api_view(['PUT'])
+# @permission_classes([IsAdminUser])
+def updateOrderToDelivered(request, id):
+
+
+    user = request.user
+    print (request.META['HTTP_AUTHORIZATION'])
+    # print('<<<<EMAIL>>>>',user.email)
+    if user.is_staff:
+        order = Order.objects.get(_id = id)
+        order.isDelivered = True
+        order.deliveredAt = datetime.now()
+        order.save() 
+        return Response('Order successfully delivered')
+    else:
+        return Response({'detail':'Not authorised to view this informationx'}, status = status.HTTP_400_BAD_REQUEST)
