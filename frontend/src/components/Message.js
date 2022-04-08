@@ -5,6 +5,7 @@ const Message = ({ variant, children }) =>{
     return(
         <Alert
             variant = {variant}
+            className="mt-2"
         >
             {children}
         </Alert>

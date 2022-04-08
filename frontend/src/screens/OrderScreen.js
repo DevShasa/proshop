@@ -18,8 +18,8 @@ const OrderScreen = (props)=>{
     const dispatch = useDispatch()
 
     // Check that a user is loggedin before proceeding
-    const { loggedIn } = useSelector(state => state.userLogin)
-    if(!loggedIn){
+    const { loggedIn, userInfo } = useSelector(state => state.userLogin)
+    if(!loggedIn){  
         props.history.push(`/login?redirect=order/${orderId}`)
     }
 
@@ -157,7 +157,6 @@ const OrderScreen = (props)=>{
                                 {!order.isPaid &&(
                                     <ListGroup.Item>
                                         {orderPay.loading && <Loader/>}
-
                                         <PayPalButton 
                                             amount = {order.totalPrice}
                                             onSuccess = {successPaymentHandler}
@@ -167,16 +166,18 @@ const OrderScreen = (props)=>{
                                         />
                                     </ListGroup.Item>
                                 )}
-                                {!order.isDelivered &&(
-                                    <ListGroup.Item>
-                                        <Button 
-                                            onClick={() => deliverOrder(order._id)} 
-                                            style = {{width: '100%'}}
-                                        >
-                                            Mark As Delivered
-                                        </Button>
-                                    </ListGroup.Item>
-                                )}
+                                    {deliverLoading && <Loader />}
+                                    {deliverError && <Message variant="danger">{deliverError}</Message>}
+                                    {!order.isDelivered && userInfo.isAdmin && order.isPaid &&(
+                                        <ListGroup.Item>
+                                                <Button 
+                                                    onClick={() => deliverOrder(order._id)} 
+                                                    style = {{width: '100%'}}
+                                                >
+                                                    Mark As Delivered
+                                                </Button>
+                                        </ListGroup.Item>
+                                    )}
                             </ListGroup>
                         </Card>
                     </Col>
