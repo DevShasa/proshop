@@ -164,7 +164,10 @@ export const adminGetUserReducer = (state = {user:{} }, action)=>{
         case ADMIN_GET_USER_SUCCESS:
             return {loading: false, user: action.payload}
         case ADMIN_GET_USER_FAIL:
-            return {loading: false, error: action.payload}
+            return {
+                ...state,
+                loading: false, 
+                error: action.payload}
         case USER_LOGOUT:
             return {
                 user:{}

@@ -41,6 +41,7 @@ const OrderScreen = (props)=>{
             // order has been sucessfuly paid
             dispatch({type: ORDER_PAY_RESET})
             dispatch({type: ORDER_DELIVER_RESET})
+            
             if(loggedIn){
                 dispatch(getOrderDetails(orderId))
             }

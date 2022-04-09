@@ -113,6 +113,6 @@ def updateOrderToDelivered(request, id):
         order.isDelivered = True
         order.deliveredAt = datetime.now()
         order.save() 
-        return Response('Order successfully delivered')
+        return Response('Order successfully delivered 👍')
     else:
         return Response({'detail':'Not authorised to view this informationx'}, status = status.HTTP_400_BAD_REQUEST)
