@@ -115,4 +115,4 @@ def updateOrderToDelivered(request, id):
         order.save() 
         return Response('Order successfully delivered 👍')
     else:
-        return Response({'detail':'Not authorised to view this informationx'}, status = status.HTTP_400_BAD_REQUEST)
+        return Response({'detail':'Not authorised to view this information'}, status = status.HTTP_400_BAD_REQUEST)

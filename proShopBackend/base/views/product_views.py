@@ -1,8 +1,8 @@
-from base.models import Product
+from base.models import Product, Review 
 from base.serializers import ProductSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework import status  
 
 @api_view(['GET'])
@@ -78,3 +78,19 @@ def uploadImage(request):
     product.save()
 
     return Response('Image was Uploaded')
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def createProductReview(request, product_key):
+    user = request.user
+    product = Product.objects.get(_id = product_key)
+    data = request.data
+
+    # 1  A review alreay exists
+    reviewExists = product.review_set.filter(user=user).exists()
+    if reviewExists:
+        content = { 'details': f'Product already has a review by {user.username }' }
+        return Response(content, status=status.HTTP_400_BAD_REQUEST)
+    # 2 Customer submitted review with no rating 
+    # 3 Create a review 
