@@ -6,7 +6,7 @@ import Message from '../components/Message';
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import FormContainer from '../components/FormContainer';
-import { listProductDetail, editProductAction } from '../redux/actions/productActions';
+import { productDetailRequest, editProductAction } from '../redux/actions/productActions';
 import { PRODUCT_EDIT_RESET } from '../redux/constants/productConstants';
 
 const ProductEditScreen = (props) =>{
@@ -43,7 +43,7 @@ const ProductEditScreen = (props) =>{
                 // product exists and matches the id passed in url
                 if(!product.name || product._id !== Number(productID) || editSuccess){
                     dispatch({type: PRODUCT_EDIT_RESET})
-                    dispatch(listProductDetail(productID))
+                    dispatch(productDetailRequest(productID))
                 }else{
                     setName(product.name)
                     setBrand(product.brand)

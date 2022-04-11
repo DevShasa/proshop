@@ -15,6 +15,9 @@ import {
     PRODUCT_EDIT_REQUEST,
     PRODUCT_EDIT_SUCCESS,
     PRODUCT_EDIT_FAIL,
+    PRODUCT_CREATE_REVIEW_REQUEST,
+    PRODUCT_CREATE_REVIEW_SUCCESS,
+    PRODUCT_CREATE_REVIEW_FAIL,
 } from '../constants/productConstants'
 
 export const listProducts = () => async (dispatch)=> {
@@ -38,7 +41,7 @@ export const listProducts = () => async (dispatch)=> {
     }
 }
 
-export const listProductDetail = (id) =>
+export const productDetailRequest = (id) =>
     async (dispatch) =>{
         try{
             dispatch({
@@ -147,9 +150,49 @@ export const editProductAction = (id, newData) => async (dispatch, getState) =>{
             payload: response.data
         })
 
+        // update the Product Detail Reducer directly instead...
+        // ..of requesting an update from frontend
+        // dispatch({
+        //     type: PRODUCT_DETAIL_SUCCESS,
+        //     payload: response.data
+        // })
+
     }catch(error){
         dispatch({
             type:PRODUCT_EDIT_FAIL,
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.response
+        })
+    }
+}
+
+export const createNewReview = (product_id, review) => async (dispatch, getState) =>{
+    try{
+        dispatch({type:PRODUCT_CREATE_REVIEW_REQUEST})
+
+        const { userLogin:{userInfo:{token}} } = getState()
+        const config = {
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }
+
+        const response = await axios.post(
+            `/api/products/${product_id}/review/`,
+            review,
+            config
+        )
+
+        dispatch({
+            type:PRODUCT_CREATE_REVIEW_SUCCESS,
+            payload: response.data
+        })
+
+    }catch(error){
+        dispatch({
+            type:PRODUCT_CREATE_REVIEW_FAIL,
             payload: error.response && error.response.data.detail
                 ? error.response.data.detail
                 : error.response
