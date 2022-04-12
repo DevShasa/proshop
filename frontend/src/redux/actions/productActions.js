@@ -20,13 +20,14 @@ import {
     PRODUCT_CREATE_REVIEW_FAIL,
 } from '../constants/productConstants'
 
-export const listProducts = () => async (dispatch)=> {
+export const listProducts = (keyword ='') => async (dispatch)=> {
     try{
         dispatch({
             type: PRODUCT_LIST_REQUEST
         })
 
-        const response = await axios.get('/api/products/')
+        // if keyword localhost:8000/api/products?keyword=phones
+        const response = await axios.get(`/api/products${keyword}`)
         dispatch({
             type: PRODUCT_LIST_SUCCESS,
             payload: response.data

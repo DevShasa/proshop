@@ -7,15 +7,18 @@ import Message from '../components/Message';
 import { useDispatch, useSelector } from 'react-redux'
 import { listProducts } from '../redux/actions/productActions';
 
-const HomeScreen = () =>{
+const HomeScreen = ({history}) =>{
 
     const dispatch = useDispatch()
     const productList = useSelector(state => state.productList )
     const {error, loading, products} = productList
 
+    // Check if there is a keyword
+    let keyword = history.location.search
+    console.log(keyword)
     useEffect(()=>{
-        dispatch(listProducts())
-    }, [dispatch])
+        dispatch(listProducts(keyword))
+    }, [dispatch, keyword])
 
     return(
         <div>

@@ -3,6 +3,7 @@ import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap'; 
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from "../redux/actions/userActions";
+import SearchBox from "./SearchBox";
 
 const Header=()=>{
 
@@ -22,6 +23,7 @@ const Header=()=>{
           </LinkContainer>
             <Navbar.Toggle aria-controls="navbarScroll" />
             <Navbar.Collapse id="navbarScroll">
+              <SearchBox />
               <Nav className="mr-auto">
 
                 <LinkContainer to="/cart"> 
@@ -32,9 +34,6 @@ const Header=()=>{
 
                 {userInfo
                   ? (
-                    // <LinkContainer to="/">
-                    //   <Nav.Link ><i className="fas fa-user"></i> {userInfo.name}</Nav.Link>
-                    // </LinkContainer>
                     <NavDropdown title={userInfo.name} id='username'>
                         <LinkContainer to='/profile'>
                           <NavDropdown.Item>Profile</NavDropdown.Item>
