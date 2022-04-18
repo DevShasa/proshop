@@ -10,9 +10,13 @@ const SearchBox = () => {
 
     function submitHandler(e){
         e.preventDefault();
+        // only redirect the user to the search results...
+        //... when there is a keyword
         if(keyword){
-            history.push(`/?keyword=${keyword.trim()}`)
+            // push to results page 
+            history.push(`/?keyword=${keyword.trim()}`) // get rid of whitespace
         }else{
+            // do nothing. reload current page 
             history.push(history.push(history.location.pathname))
         }
     }

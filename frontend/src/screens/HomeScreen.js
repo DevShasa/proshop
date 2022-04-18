@@ -15,7 +15,6 @@ const HomeScreen = ({history}) =>{
 
     // Check if there is a keyword
     let keyword = history.location.search
-    console.log(keyword)
     useEffect(()=>{
         dispatch(listProducts(keyword))
     }, [dispatch, keyword])

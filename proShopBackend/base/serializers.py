@@ -48,7 +48,7 @@ class ProductSerializer(serializers.ModelSerializer):
     def get_reviews(self, obj):
         product_reviews = obj.review_set.all()
         serializer = ReviewSerializer(product_reviews, many=True)
-        return serializer.data      
+        return serializer.data
 
 class ShippingAddressSerializer(serializers.ModelSerializer):
     class Meta:

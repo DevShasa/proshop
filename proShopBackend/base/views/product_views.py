@@ -9,7 +9,7 @@ from rest_framework import status
 def getProducts(request):
 
     query = request.query_params.get('keyword')
-    # print(f'<<<QUERY>>> : ', query)
+    print(f'<<<QUERY>>> : ', query)
     if query == None:
         query = ""
 
