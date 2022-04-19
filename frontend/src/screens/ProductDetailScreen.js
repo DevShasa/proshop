@@ -24,7 +24,7 @@ const ProductScreen = ({ match, history }) =>{
         newReviewSuccess, 
         newReviewError } = useSelector(state=> state.newProductReview)
 
-    // Use the url to update redux store 
+    // Use the url to update redux store
     useEffect(()=>{
 
         if(newReviewSuccess){
