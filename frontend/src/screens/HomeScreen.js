@@ -13,11 +13,12 @@ const HomeScreen = ({history}) =>{
     const productList = useSelector(state => state.productList )
     const {error, loading, products} = productList
 
-    // Check if there is a keyword
-    let keyword = history.location.search
+    // Check if there is a search parameter
+    // ?page=3, ?keyword=playstation&page=1, ?keyword=playstation
+    let searchParams = history.location.search
     useEffect(()=>{
-        dispatch(listProducts(keyword))
-    }, [dispatch, keyword])
+        dispatch(listProducts(searchParams))
+    }, [dispatch, searchParams])
 
     return(
         <div>

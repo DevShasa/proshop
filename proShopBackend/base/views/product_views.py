@@ -22,15 +22,16 @@ def getProducts(request):
     page = request.query_params.get('page')
 
     # paginate products Paginator(listItem, items_per_page)
-    paginator = Paginator(products, 1)
+    paginator = Paginator(products, 2)
 
     # page can be passed in as a string or int
     # page(1) or page("1")
     try:
         products =  paginator.page(page)
     except PageNotAnInteger:
-        products = paginator.page(2)
-        page = 1
+        firstpage = 1
+        products = paginator.page(firstpage)
+        page = firstpage
     except EmptyPage: #page does not have content 
         products = paginator.page(paginator.num_pages)
 

@@ -13,10 +13,10 @@ const SearchBox = () => {
         // only redirect the user to the search results...
         //... when there is a keyword
         if(keyword){
-            // push to results page 
+            // push to homescreen with search params 
             history.push(`/?keyword=${keyword.trim()}&page=1`) // get rid of whitespace
         }else{
-            // do nothing. reload current page 
+            // do nothing. reload current page
             history.push(history.push(history.location.pathname))
         }
     }
