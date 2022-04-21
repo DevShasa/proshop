@@ -28,7 +28,6 @@ const AdminProductListScreen = (props) =>{
         }
     }
 
-    let searchParams = props.history.location.search
     useEffect(()=>{
         // if(userInfo && userInfo.isAdmin){
         //     dispatch(listProducts())
@@ -44,13 +43,14 @@ const AdminProductListScreen = (props) =>{
         if(createSuccess){
             props.history.push(`/admin/product/${createdProduct._id}/edit`)
         }else{
-            dispatch(listProducts(searchParams))
+            // pass on the search paramters if present
+            dispatch(listProducts(props.history.location.search))
         }
 
         dispatch({type: PRODUCT_CREATE_RESET })
 
 
-    },[dispatch,loggedIn,props.history, userInfo, deleteSuccess, createSuccess, createdProduct])
+    },[dispatch,loggedIn,props, userInfo, deleteSuccess, createSuccess, createdProduct])
 
     return(
         <div>

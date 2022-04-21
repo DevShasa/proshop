@@ -22,7 +22,7 @@ def getProducts(request):
     page = request.query_params.get('page')
 
     # paginate products Paginator(listItem, items_per_page)
-    paginator = Paginator(products, 2)
+    paginator = Paginator(products, 1)
 
     # page can be passed in as a string or int
     # page(1) or page("1")
