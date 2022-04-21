@@ -14,7 +14,7 @@ const SearchBox = () => {
         //... when there is a keyword
         if(keyword){
             // push to results page 
-            history.push(`/?keyword=${keyword.trim()}`) // get rid of whitespace
+            history.push(`/?keyword=${keyword.trim()}&page=1`) // get rid of whitespace
         }else{
             // do nothing. reload current page 
             history.push(history.push(history.location.pathname))

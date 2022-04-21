@@ -11,8 +11,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 def getProducts(request):
     # Get keyword from url 
     query = request.query_params.get('keyword')
-    print(f'<<<QUERY>>> : ', query)
-    if query == None:
+    # print(f'<<<QUERY>>> : ', query)
+    if query == None: # there is no ?keyword in the url
         query = ""
 
     # Filter productlist by query if none return whole list 
@@ -20,24 +20,25 @@ def getProducts(request):
 
     # Grab page from url 
     page = request.query_params.get('page')
-    if page == None:
-        page =  1
 
-    page = int(page)
     # paginate products Paginator(listItem, items_per_page)
-    paginator = Paginator(products, 3)
+    paginator = Paginator(products, 1)
 
+    # page can be passed in as a string or int
+    # page(1) or page("1")
     try:
         products =  paginator.page(page)
     except PageNotAnInteger:
-        products = paginator.page(1)
+        products = paginator.page(2)
+        page = 1
     except EmptyPage: #page does not have content 
         products = paginator.page(paginator.num_pages)
 
     serializer = ProductSerializer(products, many=True)
+
     return Response({
         'products': serializer.data,
-        'page': page, 
+        'page': int(page), 
         'pages': paginator.num_pages
     })
 
