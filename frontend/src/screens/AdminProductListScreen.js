@@ -7,13 +7,16 @@ import { listProducts,
         deleteProductAction,
         createProductAction
     } from '../redux/actions/productActions';
-import { Link } from 'react-router-dom'
-import { PRODUCT_CREATE_RESET } from '../redux/constants/productConstants'
+import { Link } from 'react-router-dom';
+import { PRODUCT_CREATE_RESET } from '../redux/constants/productConstants';
+import Paginate from "../components/Paginate";
+import SearchBox from "../components/SearchBox";
 
-const AdminProductListScreen = (props) =>{
+
+const AdminProductListScreen = (props) =>{ 
 
     const dispatch = useDispatch()
-    const { loading, products, error } = useSelector(state => state.productList)
+    const { loading, products, error, pages, page } = useSelector(state => state.productList)
     const { loggedIn, userInfo } = useSelector(state => state.userLogin)
     const { deleteLoading, deleteSuccess, deleteError} = useSelector(state => state.deleteProduct)
     const { createLoading,  createSuccess, createdProduct, createError} = useSelector(state => state.productCreate)
@@ -28,6 +31,7 @@ const AdminProductListScreen = (props) =>{
         }
     }
 
+    let searchParams = props.history.location.search
     useEffect(()=>{
         // if(userInfo && userInfo.isAdmin){
         //     dispatch(listProducts())
@@ -44,23 +48,26 @@ const AdminProductListScreen = (props) =>{
             props.history.push(`/admin/product/${createdProduct._id}/edit`)
         }else{
             // pass on the search paramters if present
-            dispatch(listProducts(props.history.location.search))
+            dispatch(listProducts(searchParams))
         }
 
         dispatch({type: PRODUCT_CREATE_RESET })
 
 
-    },[dispatch,loggedIn,props, userInfo, deleteSuccess, createSuccess, createdProduct])
+    },[dispatch,loggedIn,props, userInfo, deleteSuccess, createSuccess, createdProduct,searchParams])
+
 
     return(
         <div>
+            <h1>Products</h1>
             <Row>
-                <Col>
-                    <h1>Products</h1>
-                
+                <Col md={6}>                
                     <Button className="my-3" onClick={createProductHandler}>
                         <i className="fas fa-plus"></i> Create Product
                     </Button>
+                </Col>
+                <Col md={6}>
+                    <SearchBox isAdmin={true}/>
                 </Col>
             </Row>
 
@@ -108,6 +115,7 @@ const AdminProductListScreen = (props) =>{
                                 ))}
                             </tbody>
                         </Table>
+                        <Paginate page={page} pages={pages} isAdmin={true} searchParams={searchParams} />
                     </div>
                 )
             : <Message variant="warning">Page only acessible to admins</Message>

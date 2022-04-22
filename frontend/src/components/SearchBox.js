@@ -1,25 +1,34 @@
 import React, {useState} from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom'
+import { useHistory} from 'react-router-dom'
 
-const SearchBox = () => {
+
+const SearchBox = ({isAdmin=false}) => {
 
     const [keyword, setKeyword] = useState('')
 
     let history = useHistory()
+
+
 
     function submitHandler(e){
         e.preventDefault();
         // only redirect the user to the search results...
         //... when there is a keyword
         if(keyword){
-            // push to homescreen with search params 
-            history.push(`/?keyword=${keyword.trim()}&page=1`) // get rid of whitespace
+            // push to homescreen with search params
+            if(!isAdmin){
+                history.push(`/?keyword=${keyword.trim()}&page=1`)
+            }else{
+                history.push(`/admin/productlist/?keyword=${keyword.trim()}&page=1`)
+            }
         }else{
             // do nothing. reload current page
             history.push(history.push(history.location.pathname))
         }
     }
+
+
     return(
         <Form onSubmit = {submitHandler}  className="d-flex" >
             <Form.Control

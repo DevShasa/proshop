@@ -27,7 +27,7 @@ import {
     ADMIN_UPDATE_USER_REQUEST,
     ADMIN_UPDATE_USER_SUCCESS,
     ADMIN_UPDATE_USER_FAIL,
-    ADMIN_UPDATE_USER_RESET
+    ADMIN_UPDATE_USER_RESET,
 } from '../constants/userConstants'
 
 export const userLoginReducer = ( state={loggedIn:false,userInfo:false }, action) =>{
