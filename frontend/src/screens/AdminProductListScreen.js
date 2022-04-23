@@ -40,7 +40,6 @@ const AdminProductListScreen = (props) =>{
         // }
 
         if(!userInfo.isAdmin) {
-            // user is redirected to login page
             props.history.push('/login')
         }
 
