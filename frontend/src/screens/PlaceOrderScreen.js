@@ -36,7 +36,8 @@ const PlaceOrderScreen = (props)=>{
             // Order has been created successfully therefore clear orderCreducer
             dispatch({type: ORDER_CREATE_RESET})
         }
-    },[success, props.history, dispatch]) // eslint-disable-line
+    },[success, props.history, dispatch]) // eslint-disable-line 
+    // adding order.id causes an error because the object does not exist until created
 
     const placeOrder = ()=>{
         dispatch(createOrder({
