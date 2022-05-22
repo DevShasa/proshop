@@ -11,7 +11,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 def getProducts(request):
     # Get keyword from url 
     query = request.query_params.get('keyword')
-    # print(f'<<<QUERY>>> : ', query)
+    print(f'<<<QUERY>>> : ', query)
     if query == None: # there is no ?keyword in the url
         query = ""
 

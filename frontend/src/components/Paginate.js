@@ -7,7 +7,7 @@ const Paginate = ({pages, page, searchParams="", isAdmin=false}) =>{
     // why we need to split
     // http://localhost:3000/?keyword=&page=1
     // http://localhost:3000/?keyword=?keyword=&page=1&page=1
-    // the split gets what is between ?keyword AND & 
+    // the split gets what is between ?keyword= AND & 
     let keyword = ""
     if(searchParams){
         keyword = searchParams.split(`?keyword=`)[1].split('&')[0]

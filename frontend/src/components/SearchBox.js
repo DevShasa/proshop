@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useHistory} from 'react-router-dom'
 
-
+// This component is called from navbar and also admin productlist page
 const SearchBox = ({isAdmin=false}) => {
 
     const [keyword, setKeyword] = useState('')
@@ -18,8 +18,10 @@ const SearchBox = ({isAdmin=false}) => {
         if(keyword){
             // push to homescreen with search params
             if(!isAdmin){
+                // page requesting is not admin, push to homepage
                 history.push(`/?keyword=${keyword.trim()}&page=1`)
             }else{
+                // page requesting is admin, push to admin productlistpage
                 history.push(`/admin/productlist/?keyword=${keyword.trim()}&page=1`)
             }
         }else{
