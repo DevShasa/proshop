@@ -7,7 +7,7 @@ from django.contrib.auth.hashers import make_password
 from rest_framework import status
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-
+# this class logs in users
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 

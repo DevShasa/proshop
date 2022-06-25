@@ -16,6 +16,7 @@ const HomeScreen = ({history}) =>{
     // Check if there is a search parameter
     // ?page=3, ?keyword=playstation&page=1, ?keyword=playstation
     let searchParams = history.location.search
+    console.log("SEARCHPARAMS:> " +searchParams)
     useEffect(()=>{
         dispatch(listProducts(searchParams))
     }, [dispatch, searchParams])

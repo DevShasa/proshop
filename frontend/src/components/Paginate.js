@@ -22,7 +22,7 @@ const Paginate = ({pages, page, searchParams="", isAdmin=false}) =>{
                     <Pagination>
                         {[...Array(pages).keys()].map((p)=>(
                             <LinkContainer 
-                                key={p+1} 
+                                key={p+1} //arrays staft from zero thats why p+1
                                 to={!isAdmin 
                                     ? `/?keyword=${keyword}&page=${p+1}`
                                     : `/admin/productlist/?keyword=${keyword}&page=${p+1}`
