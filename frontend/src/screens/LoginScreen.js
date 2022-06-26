@@ -9,6 +9,8 @@ import FormContainer from '../components/FormContainer';
 
 const LoginScreen = ({location, history }) =>{
 
+
+
     // the user may be redirected from some other previous location
     // if there is no redirect from preious location user will be redirected...
     // to homescreen upon logging in 
@@ -19,6 +21,7 @@ const LoginScreen = ({location, history }) =>{
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo, loading, error } = userLogin
 
+    const [viewpassword, setViewPassword] = useState(false)
     const [loginData, setloginData] = useState({
         email: '',
         password: ''
@@ -61,13 +64,21 @@ const LoginScreen = ({location, history }) =>{
                 <Form.Group controlId='password'>
                     <Form.Label>Password</Form.Label>
                     <Form.Control
-                        type = "password"
+                        type = {viewpassword ? "text" : "password"}
                         placeholder = "Enter Password"
                         value = {loginData.password}
                         onChange = {handleChange}
                         name = 'password' 
                     >
                     </Form.Control>
+                </Form.Group>
+                <Form.Group className="mt-2">
+                    <Form.Check 
+                        label = {viewpassword ? "Hide Password" : "View Password"}
+                        type="checkbox"
+                        value = {viewpassword}
+                        onChange = {()=>setViewPassword(!viewpassword)}
+                    />
                 </Form.Group>
                 <Button type="submit" variant="primary" className="mt-2">Sign In</Button>
             </Form>
