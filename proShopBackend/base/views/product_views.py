@@ -32,7 +32,7 @@ def getProducts(request):
         firstpage = 1
         products = paginator.page(firstpage)
         page = firstpage
-    except EmptyPage: #page does not have content 
+    except EmptyPage: #page exeeds available pages, grab the last page
         products = paginator.page(paginator.num_pages)
 
     serializer = ProductSerializer(products, many=True)
