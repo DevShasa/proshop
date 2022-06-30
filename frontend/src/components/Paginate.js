@@ -13,7 +13,7 @@ const Paginate = ({pages, page, searchParams="", isAdmin=false}) =>{
         keyword = searchParams.split(`?keyword=`)[1].split('&')[0]
     }
 
-    console.log('KEYWORD>',keyword)
+    console.log('KEYWORD: ',keyword)
 
     return(
         <>
@@ -23,8 +23,10 @@ const Paginate = ({pages, page, searchParams="", isAdmin=false}) =>{
                         {[...Array(pages).keys()].map((p)=>(
                             <LinkContainer 
                                 key={p+1} //arrays staft from zero thats why p+1
-                                to={!isAdmin 
+                                to={!isAdmin
                                     ? `/?keyword=${keyword}&page=${p+1}`
+                                    // The admin userlist prop will set isAdmin to true...
+                                    // pagination will then redirect to the productlist page
                                     : `/admin/productlist/?keyword=${keyword}&page=${p+1}`
                                 }
                             >
