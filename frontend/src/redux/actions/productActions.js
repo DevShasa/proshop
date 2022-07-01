@@ -110,7 +110,9 @@ export const createProductAction = () => async (dispatch, getState) => {
                 'Authorization': 'Bearer ' + token
             }
         }
-
+        
+        // The server will create a template product
+        // product list page will then redirect to edit page where details can be changed
         const response = await axios.post( `/api/products/create/`, {}, config )
 
         dispatch({

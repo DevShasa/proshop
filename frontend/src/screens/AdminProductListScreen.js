@@ -33,13 +33,10 @@ const AdminProductListScreen = (props) =>{
 
     let searchParams = props.history.location.search
     useEffect(()=>{
-        // if(userInfo && userInfo.isAdmin){
-        //     dispatch(listProducts())
-        // }else{
-        //     props.history.push('/login')
-        // }
-
+        
         if(!userInfo.isAdmin) {
+            // if user is not admin, redirect to login,
+            // if user loggedin login page redirect to homepage
             props.history.push('/login')
         }
 
