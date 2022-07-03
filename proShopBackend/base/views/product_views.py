@@ -9,7 +9,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 @api_view(['GET'])
 def getProducts(request):
-    # Get keyword from url 
+    # Get keyword from url
     query = request.query_params.get('keyword')
     print(f'<<<QUERY>>> : ', query)
     if query == None: # there is no ?keyword in the url
