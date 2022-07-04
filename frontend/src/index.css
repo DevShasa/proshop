@@ -15,3 +15,38 @@ h2{
     font: 1.4rem;
     padding: 0.5rem 0;
 }
+
+.carousel{
+    background-color:rgb(85, 85, 85) !important;
+    border-radius: 6px;
+}
+
+.carousel-caption{
+    position: absolute;
+    top: 0;
+}
+
+.carousel-caption h4{
+    color: white !important;
+}
+
+.carousel img{
+    display: block;
+    height: 300px;
+    padding: 30px;
+    margin: 40px;
+    border-radius: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 3rem;
+    /* border: 1px solid red; */
+}
+.carousel a{
+    margin: 0 auto;
+}
+
+@media (max-width: 900px){
+    .carousel-caption h4{
+        font-size: 2.5vw;
+    }
+}

@@ -5,7 +5,8 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Paginate from '../components/Paginate';
 import { useDispatch, useSelector } from 'react-redux';
-import { listProducts, getTopProducts } from '../redux/actions/productActions';
+import { listProducts } from '../redux/actions/productActions';
+import ProductCarousel from "../components/ProductCarousel";
 
 const HomeScreen = ({history}) =>{
 
@@ -19,11 +20,11 @@ const HomeScreen = ({history}) =>{
     console.log("SEARCHPARAMS:> " +searchParams)
     useEffect(()=>{
         dispatch(listProducts(searchParams))
-        dispatch(getTopProducts())
     }, [dispatch, searchParams])
 
     return(
         <div>
+            {!searchParams && <ProductCarousel /> }
             <h1>Latest Products</h1>
             {loading 
                 ? <Loader />  // if loading is true do this 
