@@ -19,6 +19,7 @@ h2{
 .carousel{
     background-color:rgb(85, 85, 85) !important;
     border-radius: 6px;
+    border: 5px solid #F3969A;
 }
 
 .carousel-caption{
