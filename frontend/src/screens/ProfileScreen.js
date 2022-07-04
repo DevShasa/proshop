@@ -22,7 +22,7 @@ const ProfileScreen = ({ history}) =>{
         const [ message, setMessage ] = useState('')
         const [editProfile, setEditProfile] = useState(false)
 
-        // Data from userDetails reducer, which is updated when this component lods
+        // Data from userDetails reducer, which is updated when this component loads
         const { user, loading, error } =  useSelector(state => state.userDetails)
         // Data from userLogin reducer to make sure that user  is logged in before any changes
         const { userInfo } = useSelector(state => state.userLogin)

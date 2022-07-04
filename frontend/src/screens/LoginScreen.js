@@ -12,7 +12,7 @@ const LoginScreen = ({location, history }) =>{
 
 
     // the user may be redirected from some other previous location
-    // if there is no redirect from preious location user will be redirected...
+    // if there is no redirect from preious location user will be redirected ...
     // to homescreen upon logging in 
     const redirect = location.search ? location.search.split("=")[1] : '/'
 

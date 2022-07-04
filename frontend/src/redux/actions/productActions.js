@@ -18,6 +18,9 @@ import {
     PRODUCT_CREATE_REVIEW_REQUEST,
     PRODUCT_CREATE_REVIEW_SUCCESS,
     PRODUCT_CREATE_REVIEW_FAIL,
+    GET_TOP_PRODUCTS_REQUEST,
+    GET_TOP_PRODUCTS_SUCCESS,
+    GET_TOP_PRODUCTS_FAIL,
 } from '../constants/productConstants'
 
 export const listProducts = (searchParams ='') => async (dispatch)=> {
@@ -42,6 +45,28 @@ export const listProducts = (searchParams ='') => async (dispatch)=> {
     }
 }
 
+export const getTopProducts = ()=>{
+    return async (dispatch)=> {
+        try{
+            dispatch({type: GET_TOP_PRODUCTS_REQUEST})
+
+            const response = await axios.get('/api/products/top/')
+            dispatch({
+                type: GET_TOP_PRODUCTS_SUCCESS,
+                payload: response.data
+            })
+
+        }catch(error){
+            dispatch({
+                type:GET_TOP_PRODUCTS_FAIL,
+                payload: error.response && error.response.data.detail
+                    ? error.response.data.detail
+                    : error.message
+            })
+        }
+    }
+}
+
 export const productDetailRequest = (id) =>
     async (dispatch) =>{
         try{
@@ -57,7 +82,7 @@ export const productDetailRequest = (id) =>
         } catch (error){
             dispatch({
                 type:PRODUCT_DETAIL_FAIL,
-                payload: error.response && error.response.data.message 
+                payload: error.response && error.response.data.detail 
                 // return Response({'detail': 'No Order Items'},  status=status.HTTP_400_BAD_REQUEST)
                     ? error.response.data.detail 
                     : error.message ,

@@ -5,7 +5,7 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Paginate from '../components/Paginate';
 import { useDispatch, useSelector } from 'react-redux';
-import { listProducts } from '../redux/actions/productActions';
+import { listProducts, getTopProducts } from '../redux/actions/productActions';
 
 const HomeScreen = ({history}) =>{
 
@@ -19,6 +19,7 @@ const HomeScreen = ({history}) =>{
     console.log("SEARCHPARAMS:> " +searchParams)
     useEffect(()=>{
         dispatch(listProducts(searchParams))
+        dispatch(getTopProducts())
     }, [dispatch, searchParams])
 
     return(
