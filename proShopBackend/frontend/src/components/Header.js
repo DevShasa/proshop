@@ -24,10 +24,10 @@ const Header=()=>{
             <Navbar.Toggle aria-controls="navbarScroll" />
             <Navbar.Collapse id="navbarScroll">
               <SearchBox />
-              <Nav className="mr-auto">
+              <Nav className="ms-auto">
 
                 <LinkContainer to="/cart"> 
-                  <Nav.Link >
+                  <Nav.Link>
                     <i className="fas fa-shopping-cart"></i> Cart{cartItems.length !== 0 && `(${cartItems.length})`}
                   </Nav.Link>
                 </LinkContainer>
