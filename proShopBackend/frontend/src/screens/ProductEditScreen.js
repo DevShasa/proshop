@@ -42,8 +42,11 @@ const ProductEditScreen = (props) =>{
                 if(editSuccess){setIsUpdated(true)}
                 // product exists and matches the id passed in url
                 if(!product.name || product._id !== Number(productID) || editSuccess){
-                    dispatch({type: PRODUCT_EDIT_RESET})
-                    dispatch(productDetailRequest(productID))
+                    // if there is no product name, nothing in the redux store
+                    // if the product id in the redux store does not match id passed in url
+                    // if there has been a sucessful edit (editSuccess), refetch new data
+                    dispatch({type: PRODUCT_EDIT_RESET}) // empty the redux store
+                    dispatch(productDetailRequest(productID)) // fetch updated data using productID
                 }else{
                     setName(product.name)
                     setBrand(product.brand)
