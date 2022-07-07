@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-nxv%nfv-m3_%amh5nm7dogx@k6yo_tal91&+0q8sh0_0wa2bl)'
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # Third party 
     'corsheaders',
     'rest_framework',
+    'storages',
 
     'base.apps.BaseConfig',
 ]
@@ -136,26 +137,16 @@ WSGI_APPLICATION = 'config.wsgi.application'
 #     }
 # }
 
-# # Local Postgresql database 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'proshop',
-#         'USER': 'postgres',
-#         'PASSWORD': 'postgres',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
-#     }
-# }
+
 
 # # Live AWS Postgresql database 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'proshop',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'proshop-instance.cx1qgzwbumfq.us-west-2.rds.amazonaws.com',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
         'PORT': '5432',
     }
 }
@@ -202,7 +193,11 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_ROOT = 'static/images'
-
+DEFAULT_FILE_STORAGE = ''
+AWS_S3_ACCESS_KEY_ID = ''
+AWS_S3_SECRET_ACCESS_KEY = ''
+AWS_STORAGE_BUCKET_NAME = ""
+AWS_QUERYSTRING_AUTH = False
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
